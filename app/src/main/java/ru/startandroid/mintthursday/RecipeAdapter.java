@@ -25,7 +25,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
     @Override
     public RecipeViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.recipe_view, parent, false);
+                .inflate(R.layout.view_recipe, parent, false);
         return new RecipeViewHolder(view);
     }
 
@@ -54,7 +54,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
 
         public void bind(Recipe recipe) {
             recipeName.setText(recipe.getNameRecipe());
-            recipeImageView.setImageDrawable(AppCompatResources.getDrawable(recipeImageView.getContext(), R.drawable.food));
+            recipeImageView.setImageDrawable(AppCompatResources.getDrawable(recipeImageView.getContext(), R.drawable.img_food));
         }
     }
 
