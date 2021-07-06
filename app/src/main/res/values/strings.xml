@@ -2,4 +2,16 @@
     <string name="app_name">MintThursday</string>
     <string name="add">add</string>
     <string name="press">Press</string>
+    <string name="new_recipe">Add new recipe</string>
+    <string name="description">Описание</string>
+    <string name="name">Название</string>
+    <string name="photo">Фото</string>
+    <string name="count_portion">Количество порций</string>
+    <string name="time">Время приготовления</string>
+    <string name="category">Категория</string>
+    <string name="ingredients">Ингредиенты</string>
+    <string name="cooking">Приготовление</string>
+
+
+
 </resources>
