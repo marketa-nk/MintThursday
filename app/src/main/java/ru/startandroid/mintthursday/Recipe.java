@@ -1,6 +1,7 @@
 package ru.startandroid.mintthursday;
 
 class Recipe {
+
     private String nameRecipe;
 
     public Recipe(String nameRecipe) {

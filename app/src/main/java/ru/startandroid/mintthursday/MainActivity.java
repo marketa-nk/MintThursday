@@ -3,9 +3,6 @@ package ru.startandroid.mintthursday;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -31,12 +28,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         fab = (FloatingActionButton) findViewById(R.id.fab1);
         fab.setOnClickListener(this);
 
-        initRecyclerView();
+        initRecyclerViewMain();
         loadRecipes();
     }
 
-    private void initRecyclerView() {
-        RecyclerView recipeRecyclerView = findViewById(R.id.recipe_recycler_view);
+    private void initRecyclerViewMain() {
+        RecyclerView recipeRecyclerView = findViewById(R.id.recipe_recycler_view_main);
         recipeRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         recipeAdapter = new RecipeAdapter();
         recipeRecyclerView.setAdapter(recipeAdapter);
