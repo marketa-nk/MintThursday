@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.fab1:
-                Intent intent = new Intent(this, NewRecipe.class);
+                Intent intent = new Intent(this, NewRecipeActivity.class);
                 startActivity(intent);
                 break;
             default:

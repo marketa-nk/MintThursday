@@ -13,9 +13,7 @@
         android:inputType="textMultiLine"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="5dp"
-
         android:layout_marginBottom="5dp"
-        android:fontFamily="@font/montserrat"
         style="@style/Base.CardView"
         android:textColor="@color/cardview_shadow_start_color"
         />
