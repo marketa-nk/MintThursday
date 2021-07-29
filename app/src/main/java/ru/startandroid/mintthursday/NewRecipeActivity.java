@@ -121,10 +121,17 @@ public class NewRecipeActivity extends AppCompatActivity implements CategoryFrag
 
 
     }
-    public String toStringSetWithJoin (Set<String> set){
-        String result = "";
-        for (String s : set) result = result + s + " ";
-        return result;
+
+    public String toStringSetWithJoin(Set<String> set) {
+        StringBuilder result = new StringBuilder();
+        String divider = "";
+        for (String s : set) {
+            result.append(divider).append(s);
+            if (divider.isEmpty()) {
+                divider = ", ";
+            }
+        }
+        return result.toString();
     }
 
 

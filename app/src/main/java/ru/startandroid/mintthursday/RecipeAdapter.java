@@ -54,7 +54,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
 
 
         public void bind(Recipe recipe) {
-            recipeName.setText(recipe.getNameRecipe());
+            recipeName.setText(recipe.getName());
             recipeImageView.setImageDrawable(AppCompatResources.getDrawable(recipeImageView.getContext(), R.drawable.img_food));
         }
     }

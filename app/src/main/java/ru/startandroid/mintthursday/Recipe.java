@@ -2,14 +2,15 @@ package ru.startandroid.mintthursday;
 
 class Recipe {
 
-    private String nameRecipe;
+    private String name;
 
-    public Recipe(String nameRecipe) {
-        this.nameRecipe = nameRecipe;
+
+    public Recipe(String name) {
+        this.name = name;
     }
 
-    public String getNameRecipe() {
-        return nameRecipe;
+    public String getName() {
+        return name;
     }
 
 
