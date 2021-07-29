@@ -14,5 +14,10 @@
         <!-- Customize your theme here. -->
         <item name="windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
+<!--        <item name="android:textViewStyle">@style/QText</item>-->
+    </style>
+
+    <style name="Text" parent="@android:style/TextAppearance.Medium">
+<!--        <item name="android:fontFamily">@font/montserrat</item>-->
     </style>
 </resources>

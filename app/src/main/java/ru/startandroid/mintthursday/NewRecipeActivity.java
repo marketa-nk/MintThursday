@@ -7,9 +7,11 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -28,8 +30,12 @@ public class NewRecipeActivity extends AppCompatActivity implements CategoryFrag
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_recipe);
 
+        ImageView closeWindow = findViewById(R.id.close);
+
+
         editCategories = findViewById(R.id.categories);
         View butCattegory = findViewById(R.id.outlinedInputCategory);
+        View butIngredient = findViewById(R.id.ingredientmin);
 
         initRecyclerViewSteps();
         loadSteps();
@@ -52,6 +58,24 @@ public class NewRecipeActivity extends AppCompatActivity implements CategoryFrag
                 }
             }
         });
+        butIngredient.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent;
+                intent = new Intent(NewRecipeActivity.this, IngredientActivity.class);
+                startActivity(intent);
+
+            }
+        });
+        closeWindow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
+
     }
 
     private void initRecyclerViewSteps() {

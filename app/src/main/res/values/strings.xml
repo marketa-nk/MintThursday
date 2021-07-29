@@ -1,7 +1,10 @@
 <resources>
     <string name="app_name">MintThursday</string>
-    <string name="add">add</string>
+    <string name="add">Добавить</string>
+    <string name="cancel">Отмена</string>
     <string name="press">Press</string>
+    <string name="save">Сохранить</string>
+    <string name="delete">Удалить</string>
     <string name="next_step">Следующий шаг</string>
     <string name="new_recipe">Новый рецепт</string>
     <string name="shag1">Шаг 1. Введите данные рецепта</string>
@@ -14,6 +17,10 @@
     <string name="category">Категория рецепта</string>
     <string name="categoryadd">Добавить категорию</string>
     <string name="categorymin">Минимум 1 категория</string>
+    <string name="ingredient">Ингредиент</string>
+    <string name="ingredientproducer">Производитель</string>
+    <string name="ingredientqty">Количество ингредиента</string>
+    <string name="ingredientunit">Единица измерения</string>
     <string name="ingredients">Ингредиенты</string>
     <string name="ingredientsmin">Минимум 3 ингредиента</string>
     <string name="ingredientsadd">Добавить ингредиент</string>
@@ -21,16 +28,16 @@
     <string name="cookingmin">Минимум 3 шага</string>
     <string name="cookingadd">Напишите инструкцию…</string>
     <string name="addstep">Добавить шаг</string>
+    <string name="calories">Калории</string>
+    <string name="carbohydrates">Углеводы</string>
+    <string name="fats">Жиры</string>
+    <string name="proteins">Белки</string>
+    <string name="nutritionalValue">Питательная ценность</string>
+
 
 
 
     <string name="photo">Фото</string>
-
-
-
-
-
-
 
 
 </resources>

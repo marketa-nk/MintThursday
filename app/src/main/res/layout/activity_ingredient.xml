@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.AppBarLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/appBar"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topAppBar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:title="@string/ingredient"
+            app:navigationIcon="@drawable/ic_baseline_arrow_back_24"
+            app:navigationIconTint="@color/white"
+            app:titleTextColor="@color/white"
+            />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <TextView
+        android:id="@+id/ingredientname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/appBar"
+        android:text="@string/ingredient"
+        android:background="@color/cardview_shadow_start_color"
+        android:textSize="20sp"
+        android:paddingStart="20sp"
+        android:padding="10sp"
+
+
+        />
+
+    <TextView
+        android:id="@+id/ingredientproducer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ingredientname"
+        android:text="@string/ingredientproducer"
+        android:background="@color/cardview_shadow_start_color"
+        android:textSize="16sp"
+        android:paddingBottom="10sp"
+        android:paddingEnd="10sp"
+        android:paddingStart="20sp"
+        />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/outlinedTextIngredientQty"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/ingredientproducer"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:hint="@string/ingredientqty"
+        app:endIconMode="clear_text"
+        app:startIconDrawable="@drawable/ic_baseline_speed_24"
+        app:endIconDrawable="@drawable/ic_baseline_clear_24">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/outlinedTextIngredientUnit"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/outlinedTextIngredientQty"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:hint="@string/ingredientunit"
+        app:endIconMode="clear_text"
+        app:startIconDrawable="@drawable/ic_baseline_format_list_bulleted_24"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/btnSave"
+        android:layout_width="0sp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/outlinedTextIngredientUnit"
+        app:layout_constraintEnd_toStartOf="@id/btnDelete"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_margin="10sp"
+        android:text="@string/save"
+        android:textColor="@color/white"/>
+    <Button
+        android:id="@+id/btnDelete"
+        android:layout_width="0sp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/btnSave"
+        app:layout_constraintTop_toBottomOf="@id/outlinedTextIngredientUnit"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="10sp"
+        android:text="@string/delete"
+        android:textColor="@color/white"
+        android:visibility="gone"
+        />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/layoutCalor"
+        android:layout_width="0sp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="2sp"
+        android:layout_marginTop="20sp"
+        android:background="@color/cardview_shadow_start_color"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toStartOf="@id/layoutCarbo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnSave">
+
+        <TextView
+            android:id="@+id/calor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/calories" />
+
+        <TextView
+            android:id="@+id/calorqty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="123456 ккал" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/layoutCarbo"
+        android:layout_width="0sp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/btnSave"
+        app:layout_constraintStart_toEndOf="@id/layoutCalor"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_marginStart="2sp"
+        android:layout_marginTop="20sp"
+        android:background="@color/cardview_shadow_start_color">
+        <TextView
+            android:id="@+id/carbo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/carbohydrates"
+            />
+        <TextView
+            android:id="@+id/carboqty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1235г"
+            />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/layoutFat"
+        android:layout_width="0sp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="2sp"
+        android:layout_marginTop="4sp"
+        android:background="@color/cardview_shadow_start_color"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toStartOf="@id/layoutProt"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layoutCalor">
+
+        <TextView
+            android:id="@+id/fats"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/fats" />
+
+        <TextView
+            android:id="@+id/fatsqty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="425г" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/layoutProt"
+        android:layout_width="0sp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/layoutCarbo"
+        app:layout_constraintStart_toEndOf="@id/layoutFat"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_marginStart="2sp"
+        android:layout_marginTop="4sp"
+        android:background="@color/cardview_shadow_start_color">
+        <TextView
+            android:id="@+id/proteins"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/proteins"
+            />
+        <TextView
+            android:id="@+id/protqty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1235г"
+            />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

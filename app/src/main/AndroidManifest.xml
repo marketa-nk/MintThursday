@@ -11,6 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MintThursday"
         tools:ignore="ExtraText">
+        <activity android:name=".IngredientActivity"></activity>
         <activity android:name=".NewRecipeActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -23,7 +24,6 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-
     </application>
 
 </manifest>
