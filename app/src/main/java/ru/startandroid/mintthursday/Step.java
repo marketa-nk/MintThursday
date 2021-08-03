@@ -10,4 +10,11 @@ public class Step {
     public String getStepInstruction() {
         return stepInstruction;
     }
+
+    @Override
+    public String toString() {
+        return "Step{" +
+                "stepInstruction='" + stepInstruction + '\'' +
+                '}';
+    }
 }

@@ -11,38 +11,45 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.StepsViewHolder> implements RecyclerRowMoveCallback.RecyclerRowMoveTouchHelper{
+public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.StepsViewHolder> implements RecyclerRowMoveCallback.RecyclerRowMoveTouchHelper {
     private List<Step> stepsList = new ArrayList<>();
-    private StepsViewHolder holder;
-    private int position;
 
     public void setItems(List<Step> steps) {
         stepsList.addAll(steps);
         notifyDataSetChanged();
     }
+
+    public void addItem(Step step) {
+        stepsList.add(step);
+        notifyDataSetChanged();
+    }
+
     public void clearItems() {
         stepsList.clear();
         notifyDataSetChanged();
     }
+    public List<Step> getItems(){
+        return stepsList;
+    }
 
 
     @NonNull
-    @org.jetbrains.annotations.NotNull
+    @NotNull
     @Override
-    public StepsAdapter.StepsViewHolder onCreateViewHolder(@NonNull @org.jetbrains.annotations.NotNull ViewGroup parent, int viewType) {
+    public StepsAdapter.StepsViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.view_step, parent, false);
         return new StepsViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull @org.jetbrains.annotations.NotNull StepsAdapter.StepsViewHolder holder, int position) {
-        this.holder = holder;
-        this.position = position;
+    public void onBindViewHolder(@NonNull @NotNull StepsAdapter.StepsViewHolder holder, int position) {
         holder.bind(stepsList.get(position));
 
     }
@@ -54,12 +61,12 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.StepsViewHol
 
     @Override
     public void onRowMoved(int from, int to) {
-        if (from < to){
-            for (int i = from; i < to; i++){
+        if (from < to) {
+            for (int i = from; i < to; i++) {
                 Collections.swap(stepsList, i, i + 1);
             }
         } else {
-            for (int i = from; i > to; i--){
+            for (int i = from; i > to; i--) {
                 Collections.swap(stepsList, i, i - 1);
             }
         }
@@ -78,7 +85,7 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.StepsViewHol
 
     }
 
-    class StepsViewHolder extends RecyclerView.ViewHolder{
+    class StepsViewHolder extends RecyclerView.ViewHolder {
         private TextView stepInstr;
         private ImageView handle;
 
