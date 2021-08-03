@@ -1,4 +1,4 @@
-package ru.startandroid.mintthursday;
+package com.mintthursday;
 
 public class Ingredient {
 

@@ -1,4 +1,4 @@
-package ru.startandroid.mintthursday;
+package com.mintthursday;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,16 +8,12 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class IngredientActivity extends AppCompatActivity {
 

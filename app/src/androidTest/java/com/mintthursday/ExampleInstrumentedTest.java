@@ -1,4 +1,4 @@
-package ru.startandroid.mintthursday;
+package com.mintthursday;
 
 import android.content.Context;
 

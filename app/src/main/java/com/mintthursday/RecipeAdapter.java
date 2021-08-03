@@ -1,4 +1,4 @@
-package ru.startandroid.mintthursday;
+package com.mintthursday;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.recyclerview.widget.RecyclerView;
 

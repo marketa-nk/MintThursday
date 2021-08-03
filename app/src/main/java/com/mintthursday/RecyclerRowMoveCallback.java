@@ -1,4 +1,4 @@
-package ru.startandroid.mintthursday;
+package com.mintthursday;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

@@ -1,8 +1,8 @@
-package ru.startandroid.mintthursday;
+package com.mintthursday;
 
-import static ru.startandroid.mintthursday.IngredientActivity.INTENT_RESULT_ARG_NAME;
-import static ru.startandroid.mintthursday.IngredientActivity.INTENT_RESULT_ARG_QUANTITY;
-import static ru.startandroid.mintthursday.IngredientActivity.INTENT_RESULT_ARG_UNIT;
+import static com.mintthursday.IngredientActivity.INTENT_RESULT_ARG_NAME;
+import static com.mintthursday.IngredientActivity.INTENT_RESULT_ARG_QUANTITY;
+import static com.mintthursday.IngredientActivity.INTENT_RESULT_ARG_UNIT;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;

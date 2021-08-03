@@ -6,7 +6,7 @@ android {
     compileSdkVersion 30
 
     defaultConfig {
-        applicationId "ru.startandroid.mintthursday"
+        applicationId "com.mintthursday"
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
