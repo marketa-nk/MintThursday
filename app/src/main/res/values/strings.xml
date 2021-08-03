@@ -33,6 +33,18 @@
     <string name="fats">Жиры</string>
     <string name="proteins">Белки</string>
     <string name="nutritionalValue">Питательная ценность</string>
+    <string name="saveRecipe">Сохранить рецепт</string>
+
+    <string-array name="ingredientUnits">
+        <item>шт</item>
+        <item>г</item>
+        <item>мл</item>
+        <item>л</item>
+        <item>ч.л</item>
+        <item>ст.л</item>
+        <item>ст</item>
+        <item>щеп</item>
+    </string-array>
 
 
 
