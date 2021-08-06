@@ -1,6 +1,9 @@
 package com.mintthursday;
 
+import static com.mintthursday.IngredientActivity.ARG_INGREDIENT;
+import static com.mintthursday.IngredientActivity.ARG_POSITION;
 import static com.mintthursday.IngredientActivity.INTENT_RESULT_ARG_NAME;
+import static com.mintthursday.IngredientActivity.INTENT_RESULT_ARG_POSITION;
 import static com.mintthursday.IngredientActivity.INTENT_RESULT_ARG_QUANTITY;
 import static com.mintthursday.IngredientActivity.INTENT_RESULT_ARG_UNIT;
 
@@ -23,6 +26,9 @@ import java.util.List;
 import java.util.Set;
 
 public class NewRecipeActivity extends AppCompatActivity implements CategoryFragment.NoticeDialogListener {
+
+    private static int REQUEST_CODE_NEW_INGREDIENT = 1;
+    private static int REQUEST_CODE_EDIT_INGREDIENT = 2;
 
     private IngredientAdapter ingredientAdapter;
     private StepsAdapter stepsAdapter;
@@ -50,10 +56,6 @@ public class NewRecipeActivity extends AppCompatActivity implements CategoryFrag
 
         RecyclerView ingrRecyclerView = findViewById(R.id.ingrRecyclerView);
         RecyclerView stepsRecyclerView = findViewById(R.id.stepsRecyclerView);
-
-
-
-
 
 
         initRecyclerViewIngredients();
@@ -105,17 +107,23 @@ public class NewRecipeActivity extends AppCompatActivity implements CategoryFrag
             public void onClick(View v) {
                 String name = String.valueOf(nameRecipe.getText());
                 String description = String.valueOf(descriptionRecipe.getText());
-                int countPortion = Integer.parseInt(qtyPortionRecipe.getText().toString());
-                int time = Integer.parseInt(timeRecipe.getText().toString());
+                int countPortion = 0;
+                int time = 0;
+                try {
+                    countPortion = Integer.parseInt(qtyPortionRecipe.getText().toString());
+                    time = Integer.parseInt(timeRecipe.getText().toString());
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
                 String category = String.valueOf(editCategories.getText());
                 List<Ingredient> ingredients = ingredientAdapter.getItems();
-                List<Step> steps= stepsAdapter.getItems();
+                List<Step> steps = stepsAdapter.getItems();
                 List<String> steps2 = new ArrayList<>();
-                for (int i = 0; i < steps.size(); i++){
+                for (int i = 0; i < steps.size(); i++) {
                     steps2.add(steps.get(i).getStepInstruction());
                 }
-                Recipe recipe = new Recipe(name,description,countPortion,time,category,ingredients,steps2);
-                System.out.println("recipe = "+recipe);
+                Recipe recipe = new Recipe(name, description, countPortion, time, category, ingredients, steps2);
+                System.out.println("recipe = " + recipe);
             }
         });
 
@@ -127,6 +135,16 @@ public class NewRecipeActivity extends AppCompatActivity implements CategoryFrag
         ingrRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         ingredientAdapter = new IngredientAdapter();
         ingrRecyclerView.setAdapter(ingredientAdapter);
+        OnItemClickListener l = (new OnItemClickListener() {
+            @Override
+            public void onItemClick(Ingredient ingredient, int itemPosition) {
+                Intent intent = new Intent(NewRecipeActivity.this, IngredientActivity.class);
+                intent.putExtra(ARG_INGREDIENT, ingredient);
+                intent.putExtra(ARG_POSITION, itemPosition);
+                startActivityForResult(intent, REQUEST_CODE_EDIT_INGREDIENT);
+            }
+        });
+        ingredientAdapter.setOnItemClickListener(l);
     }
 
     private void initRecyclerViewSteps() {
@@ -185,14 +203,18 @@ public class NewRecipeActivity extends AppCompatActivity implements CategoryFrag
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_NEW_INGREDIENT && resultCode == Activity.RESULT_OK) {
+        if ((requestCode == REQUEST_CODE_EDIT_INGREDIENT || requestCode == REQUEST_CODE_NEW_INGREDIENT) && resultCode == Activity.RESULT_OK) {
             if (data != null) {
                 String name = data.getStringExtra(INTENT_RESULT_ARG_NAME);
                 double quantity = data.getDoubleExtra(INTENT_RESULT_ARG_QUANTITY, 0);
                 String unit = data.getStringExtra(INTENT_RESULT_ARG_UNIT);
-
+                Integer itemPosition = (Integer) data.getSerializableExtra(INTENT_RESULT_ARG_POSITION);
                 Ingredient ingredient = new Ingredient(name, quantity, unit);
-                ingredientAdapter.addItem(ingredient);
+                if (itemPosition != null) {
+                    ingredientAdapter.updateItem(ingredient,itemPosition);
+                } else {
+                    ingredientAdapter.addItem(ingredient);
+                }
 
 
             }
@@ -211,5 +233,5 @@ public class NewRecipeActivity extends AppCompatActivity implements CategoryFrag
         return result.toString();
     }
 
-    private static int REQUEST_CODE_NEW_INGREDIENT = 1;
+
 }

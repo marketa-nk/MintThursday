@@ -18,14 +18,28 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
     private List<Ingredient> ingredientList = new ArrayList<>();
     OnItemClickListener ingredientListener;
 
+    public void setOnItemClickListener(final OnItemClickListener itemClickListener) {
+        this.ingredientListener = itemClickListener;
+    }
+
+    public List<Ingredient> getItems() {
+        return ingredientList;
+    }
+
     public void addItem(Ingredient ingredient) {
         ingredientList.add(ingredient);
         notifyItemInserted(ingredientList.indexOf(ingredient));
 
     }
 
-    public List<Ingredient> getItems() {
-        return ingredientList;
+    private void deleteItem(int position) {
+        ingredientList.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    public void updateItem(Ingredient ingredient, int itemPosition) {
+        ingredientList.set(itemPosition,ingredient);
+        notifyItemChanged(itemPosition);
     }
 
     @NonNull
@@ -42,17 +56,17 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
         holder.bind(ingredientList.get(position));
 
     }
-
     @Override
     public int getItemCount() {
         return ingredientList.size();
     }
-
     class IngredientViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView ingrName;
         private TextView ingrQty;
+
         private TextView ingrUnit;
+
         private ImageButton btnIngrRemove;
 
 
@@ -65,7 +79,6 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
             btnIngrRemove.setOnClickListener(this);
             itemView.setOnClickListener(this);
         }
-
         public void bind(Ingredient ingredient) {
             ingrName.setText(ingredient.getName());
             ingrQty.setText(String.valueOf(ingredient.getQuantity()));
@@ -77,23 +90,15 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
         public void onClick(View v) {
             if (v.equals(btnIngrRemove)) {
                 deleteItem(getAdapterPosition());
-            } else if (ingredientListener != null) {
-                ingredientListener.onItemClick(v, getAdapterPosition());
+            } else {
+                if (ingredientListener != null) {
+                    Ingredient ingredient = ingredientList.get(getAdapterPosition());
+                    int i = getAdapterPosition();
+                    ingredientListener.onItemClick(ingredient,i);
+                }
             }
         }
-    }
 
-    private void deleteItem(int position) {
-        ingredientList.remove(position);
-        notifyItemRemoved(position);
-    }
-
-    public void setOnItemClickListener(final OnItemClickListener itemClickListener) {
-        this.ingredientListener = itemClickListener;
-    }
-
-    public interface OnItemClickListener {
-        void onItemClick(View view, int position);
     }
 
 

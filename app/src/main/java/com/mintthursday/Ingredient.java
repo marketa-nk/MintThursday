@@ -1,6 +1,9 @@
 package com.mintthursday;
 
-public class Ingredient {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Ingredient implements Parcelable {
 
     private String name;
     private double quantity;
@@ -11,6 +14,36 @@ public class Ingredient {
         this.quantity = quantity;
         this.unit = unit;
     }
+
+    protected Ingredient(Parcel in) {
+        name = in.readString();
+        quantity = in.readDouble();
+        unit = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
+        dest.writeDouble(quantity);
+        dest.writeString(unit);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<Ingredient> CREATOR = new Creator<Ingredient>() {
+        @Override
+        public Ingredient createFromParcel(Parcel in) {
+            return new Ingredient(in);
+        }
+
+        @Override
+        public Ingredient[] newArray(int size) {
+            return new Ingredient[size];
+        }
+    };
 
     public String getName() {
         return name;
