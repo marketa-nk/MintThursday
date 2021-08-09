@@ -13,6 +13,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -29,11 +30,15 @@ public class NewRecipeActivity extends AppCompatActivity implements CategoryFrag
 
     private static int REQUEST_CODE_NEW_INGREDIENT = 1;
     private static int REQUEST_CODE_EDIT_INGREDIENT = 2;
-
+    TextView descriptionRecipe;
+    TextView nameRecipe;
+    TextView qtyPortionRecipe;
+    TextView timeRecipe;
+    RecyclerView ingrRecyclerView;
+    RecyclerView stepsRecyclerView;
     private IngredientAdapter ingredientAdapter;
     private StepsAdapter stepsAdapter;
     private TextView editCategories;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,13 +54,13 @@ public class NewRecipeActivity extends AppCompatActivity implements CategoryFrag
         View butAddStep = findViewById(R.id.btnAddStep);
         View butSaveRecipe = findViewById(R.id.btnSaveRecipe);
 
-        TextView nameRecipe = findViewById(R.id.textInputName);
-        TextView descriptionRecipe = findViewById(R.id.textInputDescription);
-        TextView qtyPortionRecipe = findViewById(R.id.textInputQtyPortions);
-        TextView timeRecipe = findViewById(R.id.textInputTime);
+        descriptionRecipe = findViewById(R.id.textInputDescription);
+        nameRecipe = findViewById(R.id.textInputName);
+        qtyPortionRecipe = findViewById(R.id.textInputQtyPortions);
+        timeRecipe = findViewById(R.id.textInputTime);
 
-        RecyclerView ingrRecyclerView = findViewById(R.id.ingrRecyclerView);
-        RecyclerView stepsRecyclerView = findViewById(R.id.stepsRecyclerView);
+        ingrRecyclerView = findViewById(R.id.ingrRecyclerView);
+        stepsRecyclerView = findViewById(R.id.stepsRecyclerView);
 
 
         initRecyclerViewIngredients();
@@ -105,25 +110,10 @@ public class NewRecipeActivity extends AppCompatActivity implements CategoryFrag
         butSaveRecipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String name = String.valueOf(nameRecipe.getText());
-                String description = String.valueOf(descriptionRecipe.getText());
-                int countPortion = 0;
-                int time = 0;
-                try {
-                    countPortion = Integer.parseInt(qtyPortionRecipe.getText().toString());
-                    time = Integer.parseInt(timeRecipe.getText().toString());
-                } catch (NumberFormatException e) {
-                    e.printStackTrace();
-                }
-                String category = String.valueOf(editCategories.getText());
-                List<Ingredient> ingredients = ingredientAdapter.getItems();
-                List<Step> steps = stepsAdapter.getItems();
-                List<String> steps2 = new ArrayList<>();
-                for (int i = 0; i < steps.size(); i++) {
-                    steps2.add(steps.get(i).getStepInstruction());
-                }
-                Recipe recipe = new Recipe(name, description, countPortion, time, category, ingredients, steps2);
-                System.out.println("recipe = " + recipe);
+                Recipe recipe = buildRecipe();
+                saveRecipe(recipe);
+
+
             }
         });
 
@@ -211,7 +201,7 @@ public class NewRecipeActivity extends AppCompatActivity implements CategoryFrag
                 Integer itemPosition = (Integer) data.getSerializableExtra(INTENT_RESULT_ARG_POSITION);
                 Ingredient ingredient = new Ingredient(name, quantity, unit);
                 if (itemPosition != null) {
-                    ingredientAdapter.updateItem(ingredient,itemPosition);
+                    ingredientAdapter.updateItem(ingredient, itemPosition);
                 } else {
                     ingredientAdapter.addItem(ingredient);
                 }
@@ -219,6 +209,34 @@ public class NewRecipeActivity extends AppCompatActivity implements CategoryFrag
 
             }
         }
+    }
+
+    private Recipe buildRecipe() {
+        String name = String.valueOf(nameRecipe.getText());
+        String description = String.valueOf(descriptionRecipe.getText());
+        int countPortion = 0;
+        int time = 0;
+        try {
+            countPortion = Integer.parseInt(qtyPortionRecipe.getText().toString());
+            time = Integer.parseInt(timeRecipe.getText().toString());
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        String category = String.valueOf(editCategories.getText());
+        List<Ingredient> ingredients = ingredientAdapter.getItems();
+        List<Step> steps = stepsAdapter.getItems();
+        List<String> steps2 = new ArrayList<>();
+        for (int i = 0; i < steps.size(); i++) {
+            steps2.add(steps.get(i).getStepInstruction());
+        }
+        return new Recipe(name, description, countPortion, time, category, ingredients, steps2);
+
+    }
+
+    private void saveRecipe(Recipe recipe) {
+        AppDatabase db = App.getInstance().getDatabase();
+        RecipeDao recipeDao = db.recipeDao();
+        recipeDao.insert(recipe);
     }
 
     public String toStringSetWithJoin(Set<String> set) {

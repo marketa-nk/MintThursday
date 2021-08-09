@@ -1,17 +1,30 @@
 package com.mintthursday;
 
+
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
+
 import java.util.List;
 
-class Recipe {
+@Entity
+public class Recipe {
 
+    @NonNull
+    @PrimaryKey
     private String name;
     private String description;
     private int countPortion;
     private int time;
     private String category;
+    @TypeConverters({ListIngredientConverter.class})
     private List<Ingredient> ingredients;
+    @TypeConverters({ListStringConverter.class})
     private List<String> steps;
 
+    @Ignore
     public Recipe(String name) {
         this.name = name;
     }
