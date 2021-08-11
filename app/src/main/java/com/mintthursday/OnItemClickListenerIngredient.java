@@ -1,5 +1,5 @@
 package com.mintthursday;
 
-public interface OnItemClickListener {
+public interface OnItemClickListenerIngredient {
     void onItemClick(Ingredient ingredient, int itemPosition);
 }

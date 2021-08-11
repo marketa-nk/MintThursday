@@ -1,6 +1,9 @@
 package com.mintthursday;
 
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.Ignore;
@@ -10,7 +13,7 @@ import androidx.room.TypeConverters;
 import java.util.List;
 
 @Entity
-public class Recipe {
+public class Recipe implements Parcelable {
 
     @NonNull
     @PrimaryKey
@@ -38,6 +41,44 @@ public class Recipe {
         this.ingredients = ingredients;
         this.steps = steps;
     }
+
+    protected Recipe(Parcel in) {
+        name = in.readString();
+        description = in.readString();
+        countPortion = in.readInt();
+        time = in.readInt();
+        category = in.readString();
+        ingredients = in.createTypedArrayList(Ingredient.CREATOR);
+        steps = in.createStringArrayList();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
+        dest.writeString(description);
+        dest.writeInt(countPortion);
+        dest.writeInt(time);
+        dest.writeString(category);
+        dest.writeTypedList(ingredients);
+        dest.writeStringList(steps);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<Recipe> CREATOR = new Creator<Recipe>() {
+        @Override
+        public Recipe createFromParcel(Parcel in) {
+            return new Recipe(in);
+        }
+
+        @Override
+        public Recipe[] newArray(int size) {
+            return new Recipe[size];
+        }
+    };
 
     public String getDescription() {
         return description;

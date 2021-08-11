@@ -16,9 +16,9 @@ import java.util.List;
 
 public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.IngredientViewHolder> {
     private List<Ingredient> ingredientList = new ArrayList<>();
-    OnItemClickListener ingredientListener;
+    OnItemClickListenerIngredient ingredientListener;
 
-    public void setOnItemClickListener(final OnItemClickListener itemClickListener) {
+    public void setOnItemClickListener(final OnItemClickListenerIngredient itemClickListener) {
         this.ingredientListener = itemClickListener;
     }
 

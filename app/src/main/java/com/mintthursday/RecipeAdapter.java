@@ -1,4 +1,5 @@
 package com.mintthursday;
+
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,11 +15,17 @@ import java.util.List;
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder> {
 
     private List<Recipe> recipeList = new ArrayList<>();
+    private OnItemClickListenerRecipe recipeListener;
+
+    public void setOnItemClickListenerRecipe(final OnItemClickListenerRecipe itemClickListenerRecipe) {
+        this.recipeListener = itemClickListenerRecipe;
+    }
 
     public void setItems(List<Recipe> recipes) {
         recipeList = recipes;
         notifyDataSetChanged();
     }
+
     public void clearItems() {
         recipeList.clear();
         notifyDataSetChanged();
@@ -41,7 +48,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
         return recipeList.size();
     }
 
-    class RecipeViewHolder extends RecyclerView.ViewHolder {
+    class RecipeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
         private ImageView recipeImageView;
         private TextView recipeName;
@@ -51,12 +58,32 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
             super(itemView);
             recipeImageView = itemView.findViewById(R.id.recipe_image_view);
             recipeName = itemView.findViewById(R.id.recipe_name);
+            itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
         }
 
 
         public void bind(Recipe recipe) {
             recipeName.setText(recipe.getName());
             recipeImageView.setImageDrawable(AppCompatResources.getDrawable(recipeImageView.getContext(), R.drawable.img_food));
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (recipeListener != null) {
+                Recipe recipe = recipeList.get(getAdapterPosition());
+                recipeListener.onItemClick(recipe, getAdapterPosition());
+            }
+        }
+
+
+        @Override
+        public boolean onLongClick(View v) {
+            if (recipeListener != null) {
+                Recipe recipe = recipeList.get(getAdapterPosition());
+                recipeListener.onItemLongClick(recipe, getAdapterPosition());
+            }
+            return true;
         }
     }
 

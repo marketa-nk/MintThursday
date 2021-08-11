@@ -13,12 +13,10 @@ import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Room;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -29,10 +27,11 @@ import java.util.Set;
 
 public class NewRecipeActivity extends AppCompatActivity implements CategoryFragment.NoticeDialogListener {
 
+    public static final String ARG_RECIPE = "ARG_RECIPE";
     private static int REQUEST_CODE_NEW_INGREDIENT = 1;
     private static int REQUEST_CODE_EDIT_INGREDIENT = 2;
-    TextView descriptionRecipe;
     TextView nameRecipe;
+    TextView descriptionRecipe;
     TextView qtyPortionRecipe;
     TextView timeRecipe;
     RecyclerView ingrRecyclerView;
@@ -55,8 +54,8 @@ public class NewRecipeActivity extends AppCompatActivity implements CategoryFrag
         View butAddStep = findViewById(R.id.btnAddStep);
         View butSaveRecipe = findViewById(R.id.btnSaveRecipe);
 
-        descriptionRecipe = findViewById(R.id.textInputDescription);
         nameRecipe = findViewById(R.id.textInputName);
+        descriptionRecipe = findViewById(R.id.textInputDescription);
         qtyPortionRecipe = findViewById(R.id.textInputQtyPortions);
         timeRecipe = findViewById(R.id.textInputTime);
 
@@ -125,7 +124,7 @@ public class NewRecipeActivity extends AppCompatActivity implements CategoryFrag
         ingrRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         ingredientAdapter = new IngredientAdapter();
         ingrRecyclerView.setAdapter(ingredientAdapter);
-        OnItemClickListener l = (new OnItemClickListener() {
+        OnItemClickListenerIngredient l = (new OnItemClickListenerIngredient() {
             @Override
             public void onItemClick(Ingredient ingredient, int itemPosition) {
                 Intent intent = new Intent(NewRecipeActivity.this, IngredientActivity.class);

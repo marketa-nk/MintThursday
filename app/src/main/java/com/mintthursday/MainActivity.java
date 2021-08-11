@@ -1,8 +1,11 @@
 package com.mintthursday;
 
+import static com.mintthursday.NewRecipeActivity.ARG_RECIPE;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,12 +15,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final int REQUEST_CODE_MAIN_ACTIVITY = 1;
+    private static final int REQUEST_CODE_EDIT_RECIPE = 2;
+
+
+
+
 
     private RecipeAdapter recipeAdapter;
 
@@ -39,6 +46,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         recipeRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         recipeAdapter = new RecipeAdapter();
         recipeRecyclerView.setAdapter(recipeAdapter);
+        OnItemClickListenerRecipe a = (new OnItemClickListenerRecipe() {
+            @Override
+            public void onItemClick(Recipe recipe, int itemPosition) {
+                openEditRecipe(recipe);
+            }
+
+            @Override
+            public void onItemLongClick(Recipe recipe, int position) {
+                Toast.makeText(MainActivity.this, "LongClick", Toast.LENGTH_SHORT).show();
+            }
+        });
+        recipeAdapter.setOnItemClickListenerRecipe(a);
+
+    }
+
+    private void openEditRecipe(Recipe recipe) {
+        Intent intent = new Intent(this, NewRecipeActivity.class);
+        intent.putExtra(ARG_RECIPE, recipe);
+        startActivityForResult(intent, REQUEST_CODE_EDIT_RECIPE);
     }
 
     private void loadRecipes() {
