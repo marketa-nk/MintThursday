@@ -12,10 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder> {
+
     private List<Recipe> recipeList = new ArrayList<>();
 
     public void setItems(List<Recipe> recipes) {
-        recipeList.addAll(recipes);
+        recipeList = recipes;
         notifyDataSetChanged();
     }
     public void clearItems() {

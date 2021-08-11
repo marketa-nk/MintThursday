@@ -120,5 +120,6 @@ public class IngredientActivity extends AppCompatActivity {
         intent.putExtra(INTENT_RESULT_ARG_UNIT, unit);
         setResult(RESULT_OK, intent);
         finish();
+
     }
 }

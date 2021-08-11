@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,8 +17,9 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private static final int REQUEST_CODE_MAIN_ACTIVITY = 1;
+
     private RecipeAdapter recipeAdapter;
-    FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +27,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
-        fab = (FloatingActionButton) findViewById(R.id.fab1);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab1);
         fab.setOnClickListener(this);
 
         initRecyclerViewMain();
@@ -40,27 +42,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void loadRecipes() {
-        List<Recipe> recipes = getRecipes();
+        List<Recipe> recipes = App.getInstance().getDatabase().recipeDao().getAll();
         recipeAdapter.setItems(recipes);
     }
 
-    private List<Recipe> getRecipes() {
-        List<Recipe> list = new ArrayList<>();
-        for (int i = 0; i < 15; i++) {
-            list.add(new Recipe("Recipe " + i ));
-        }
 
-        return list;
-    }
+
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.fab1:
                 Intent intent = new Intent(this, NewRecipeActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, REQUEST_CODE_MAIN_ACTIVITY);
                 break;
             default:
                 break;
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        loadRecipes();
     }
 }
 

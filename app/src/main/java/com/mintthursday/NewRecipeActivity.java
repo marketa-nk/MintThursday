@@ -18,6 +18,7 @@ import androidx.room.Room;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -112,8 +113,7 @@ public class NewRecipeActivity extends AppCompatActivity implements CategoryFrag
             public void onClick(View v) {
                 Recipe recipe = buildRecipe();
                 saveRecipe(recipe);
-
-
+                onBackPressed();
             }
         });
 
