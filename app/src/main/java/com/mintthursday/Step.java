@@ -11,6 +11,10 @@ public class Step {
         return stepInstruction;
     }
 
+    public void setStepInstruction(String stepInstruction) {
+        this.stepInstruction = stepInstruction;
+    }
+
     @Override
     public String toString() {
         return "Step{" +

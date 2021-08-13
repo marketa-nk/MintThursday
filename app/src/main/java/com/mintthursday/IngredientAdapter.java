@@ -15,8 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.IngredientViewHolder> {
-    private List<Ingredient> ingredientList = new ArrayList<>();
     OnItemClickListenerIngredient ingredientListener;
+    private List<Ingredient> ingredientList = new ArrayList<>();
 
     public void setOnItemClickListener(final OnItemClickListenerIngredient itemClickListener) {
         this.ingredientListener = itemClickListener;
@@ -26,10 +26,14 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
         return ingredientList;
     }
 
+    public void setItems(List<Ingredient> ingredients) {
+        ingredientList = ingredients;
+        notifyDataSetChanged();
+    }
+
     public void addItem(Ingredient ingredient) {
         ingredientList.add(ingredient);
         notifyItemInserted(ingredientList.indexOf(ingredient));
-
     }
 
     private void deleteItem(int position) {
@@ -38,7 +42,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
     }
 
     public void updateItem(Ingredient ingredient, int itemPosition) {
-        ingredientList.set(itemPosition,ingredient);
+        ingredientList.set(itemPosition, ingredient);
         notifyItemChanged(itemPosition);
     }
 
@@ -56,10 +60,12 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
         holder.bind(ingredientList.get(position));
 
     }
+
     @Override
     public int getItemCount() {
         return ingredientList.size();
     }
+
     class IngredientViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView ingrName;
@@ -79,11 +85,11 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
             btnIngrRemove.setOnClickListener(this);
             itemView.setOnClickListener(this);
         }
+
         public void bind(Ingredient ingredient) {
             ingrName.setText(ingredient.getName());
             ingrQty.setText(String.valueOf(ingredient.getQuantity()));
             ingrUnit.setText(ingredient.getUnit());
-
         }
 
         @Override
@@ -94,7 +100,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
                 if (ingredientListener != null) {
                     Ingredient ingredient = ingredientList.get(getAdapterPosition());
                     int i = getAdapterPosition();
-                    ingredientListener.onItemClick(ingredient,i);
+                    ingredientListener.onItemClick(ingredient, i);
                 }
             }
         }

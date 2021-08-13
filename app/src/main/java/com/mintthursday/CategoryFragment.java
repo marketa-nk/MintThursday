@@ -13,7 +13,7 @@ import java.util.Set;
 
 public class CategoryFragment extends DialogFragment {
 
-    private Set<String> chooseData = new HashSet<>();
+    private final Set<String> chooseData = new HashSet<>();
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {

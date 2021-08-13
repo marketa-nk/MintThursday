@@ -17,6 +17,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -115,7 +118,27 @@ public class NewRecipeActivity extends AppCompatActivity implements CategoryFrag
                 onBackPressed();
             }
         });
+        initEditRecipe();
 
+
+    }
+
+    private void initEditRecipe() {
+        Recipe recipe = getIntent().getParcelableExtra(ARG_RECIPE);
+        if (recipe != null) {
+            nameRecipe.setText(recipe.getName());
+            descriptionRecipe.setText(recipe.getDescription());
+            qtyPortionRecipe.setText(String.valueOf(recipe.getCountPortion()));
+            timeRecipe.setText(String.valueOf(recipe.getTime()));
+            editCategories.setText(recipe.getCategory());
+            ingredientAdapter.setItems(recipe.getIngredients());
+            List<String> list = recipe.getSteps();
+            List<Step> steps = new ArrayList<>();
+            for (int i = 0; i < list.size(); i++){
+                steps.add(new Step(list.get(i)));
+            }
+            stepsAdapter.setItems(steps);
+        }
 
     }
 
@@ -154,7 +177,7 @@ public class NewRecipeActivity extends AppCompatActivity implements CategoryFrag
     private List<Step> getSteps() {
         List<Step> list = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
-            list.add(new Step(i + " Напишите инструкцию…"));
+            list.add(new Step(""));
         }
         return list;
     }
@@ -165,7 +188,7 @@ public class NewRecipeActivity extends AppCompatActivity implements CategoryFrag
     }
 
     private Step getOneStep() {
-        Step oneStep = new Step("Напишите инструкцию… ");
+        Step oneStep = new Step("");
         return oneStep;
     }
 

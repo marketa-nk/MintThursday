@@ -1,6 +1,8 @@
 package com.mintthursday;
 
 import android.graphics.Color;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +22,7 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.StepsViewHol
     private List<Step> stepsList = new ArrayList<>();
 
     public void setItems(List<Step> steps) {
-        stepsList.addAll(steps);
+        stepsList = steps;
         notifyDataSetChanged();
     }
 
@@ -50,6 +52,21 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.StepsViewHol
     @Override
     public void onBindViewHolder(@NonNull @NotNull StepsAdapter.StepsViewHolder holder, int position) {
         holder.bind(stepsList.get(position));
+        holder.stepInstr.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                int i = holder.getAdapterPosition();
+                stepsList.get(i).setStepInstruction(s.toString().trim());
+            }
+        });
 
     }
 
@@ -92,12 +109,11 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.StepsViewHol
             super(itemView);
             stepInstr = itemView.findViewById(R.id.step);
             handle = itemView.findViewById(R.id.handle);
-
         }
 
 
         public void bind(Step step) {
-            stepInstr.setHint(step.getStepInstruction());
+            stepInstr.setText(step.getStepInstruction());
 
         }
 

@@ -1,5 +1,7 @@
 package com.mintthursday;
 
+import static androidx.room.OnConflictStrategy.*;
+
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -17,11 +19,8 @@ public interface RecipeDao {
     @Query("SELECT * FROM recipe WHERE name = :name")
     Recipe getByRecipe(String name);
 
-    @Insert(onConflict = OnConflictStrategy.ABORT)
+    @Insert(onConflict = REPLACE)
     void insert(Recipe recipe);
-
-    @Update(onConflict = OnConflictStrategy.REPLACE)
-    void update(Recipe recipe);
 
     @Delete
     void delete(Recipe recipe);
