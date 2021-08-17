@@ -43,6 +43,8 @@ public class NewRecipeActivity extends AppCompatActivity implements CategoryFrag
     private StepsAdapter stepsAdapter;
     private TextView editCategories;
 
+    private long idRecipe = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +71,7 @@ public class NewRecipeActivity extends AppCompatActivity implements CategoryFrag
         initRecyclerViewIngredients();
         initRecyclerViewSteps();
         loadSteps();
+        initEditRecipe();
 
         butCattegory.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,7 +121,6 @@ public class NewRecipeActivity extends AppCompatActivity implements CategoryFrag
                 onBackPressed();
             }
         });
-        initEditRecipe();
 
 
     }
@@ -126,6 +128,7 @@ public class NewRecipeActivity extends AppCompatActivity implements CategoryFrag
     private void initEditRecipe() {
         Recipe recipe = getIntent().getParcelableExtra(ARG_RECIPE);
         if (recipe != null) {
+            idRecipe = recipe.getId();
             nameRecipe.setText(recipe.getName());
             descriptionRecipe.setText(recipe.getDescription());
             qtyPortionRecipe.setText(String.valueOf(recipe.getCountPortion()));
@@ -134,7 +137,7 @@ public class NewRecipeActivity extends AppCompatActivity implements CategoryFrag
             ingredientAdapter.setItems(recipe.getIngredients());
             List<String> list = recipe.getSteps();
             List<Step> steps = new ArrayList<>();
-            for (int i = 0; i < list.size(); i++){
+            for (int i = 0; i < list.size(); i++) {
                 steps.add(new Step(list.get(i)));
             }
             stepsAdapter.setItems(steps);
@@ -251,7 +254,7 @@ public class NewRecipeActivity extends AppCompatActivity implements CategoryFrag
         for (int i = 0; i < steps.size(); i++) {
             steps2.add(steps.get(i).getStepInstruction());
         }
-        return new Recipe(name, description, countPortion, time, category, ingredients, steps2);
+        return new Recipe(idRecipe, name, description, countPortion, time, category, ingredients, steps2);
 
     }
 

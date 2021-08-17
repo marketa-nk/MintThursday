@@ -4,6 +4,8 @@ import static com.mintthursday.NewRecipeActivity.ARG_RECIPE;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -22,7 +24,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final int REQUEST_CODE_MAIN_ACTIVITY = 1;
     private static final int REQUEST_CODE_EDIT_RECIPE = 2;
 
-
+    private androidx.appcompat.view.ActionMode actionMode;
 
 
 
@@ -49,12 +51,56 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         OnItemClickListenerRecipe a = (new OnItemClickListenerRecipe() {
             @Override
             public void onItemClick(Recipe recipe, int itemPosition) {
-                openEditRecipe(recipe);
+                Toast.makeText(MainActivity.this, "It will be opened soon", Toast.LENGTH_LONG).show();
+                //Log.d("Mint", recipe.toString());
             }
 
             @Override
-            public void onItemLongClick(Recipe recipe, int position) {
-                Toast.makeText(MainActivity.this, "LongClick", Toast.LENGTH_SHORT).show();
+            public boolean onItemLongClick(Recipe recipe, int position) {
+                if (actionMode != null) {
+                    return false;
+                }
+                actionMode = startSupportActionMode(new androidx.appcompat.view.ActionMode.Callback() {
+                    @Override
+                    public boolean onCreateActionMode(androidx.appcompat.view.ActionMode mode, Menu menu) {
+                        mode.getMenuInflater().inflate(R.menu.menu_main_activity, menu);
+                        mode.setTitle("Hi");
+                        return true;
+                    }
+
+                    @Override
+                    public boolean onPrepareActionMode(androidx.appcompat.view.ActionMode mode, Menu menu) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onActionItemClicked(androidx.appcompat.view.ActionMode mode, MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.correct_recipe:
+                                openEditRecipe(recipe);
+                                Toast.makeText(MainActivity.this, "You want to correct recipe", Toast.LENGTH_SHORT).show();
+                                mode.finish();
+                                return true;
+                            case R.id.delete_recipe:
+                                App.getInstance().getDatabase().recipeDao().delete(recipe);
+                                loadRecipes();
+                                Toast.makeText(MainActivity.this, "Recipe was deleted", Toast.LENGTH_SHORT).show();
+                                mode.finish();
+                                return true;
+                            default:
+                                return false;
+                        }
+                    }
+
+                    @Override
+                    public void onDestroyActionMode(androidx.appcompat.view.ActionMode mode) {
+                        actionMode = null;
+
+                    }
+                });
+                return true;
+                //Toast.makeText(MainActivity.this, "LongClick", Toast.LENGTH_SHORT).show();
+
             }
         });
         recipeAdapter.setOnItemClickListenerRecipe(a);

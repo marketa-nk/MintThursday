@@ -15,9 +15,20 @@
         <item name="windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
 <!--        <item name="android:textViewStyle">@style/QText</item>-->
+        <item name="windowActionModeOverlay">true</item>
+        <item name="actionModeStyle">@style/Widget.App.ActionMode</item>
+        <item name="actionModeCloseDrawable">@drawable/ic_baseline_clear_24</item>
+        <item name="actionBarTheme">@style/ThemeOverlay.MaterialComponents.Dark.ActionBar</item>
     </style>
 
     <style name="Text" parent="@android:style/TextAppearance.Medium">
 <!--        <item name="android:fontFamily">@font/montserrat</item>-->
     </style>
+
+    <style name="Widget.App.ActionMode" parent="Widget.AppCompat.ActionMode">
+        <item name="titleTextStyle">?attr/textAppearanceHeadline6</item>
+        <item name="subtitleTextStyle">?attr/textAppearanceSubtitle1</item>
+        <item name="background">@color/material_grey_900</item>
+    </style>
+
 </resources>

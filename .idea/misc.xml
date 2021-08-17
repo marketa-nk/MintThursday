@@ -9,13 +9,17 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Projects/MintThursday/app/src/main/res/drawable/ic_baseline_clear_24.xml" value="0.25625" />
+        <entry key="..\:/Projects/MintThursday/app/src/main/res/drawable/ic_baseline_speed_24.xml" value="0.25625" />
         <entry key="..\:/Projects/MintThursday/app/src/main/res/layout/activity_ingredient.xml" value="0.25416666666666665" />
         <entry key="..\:/Projects/MintThursday/app/src/main/res/layout/activity_main.xml" value="0.13802083333333334" />
         <entry key="..\:/Projects/MintThursday/app/src/main/res/layout/activity_new_recipe.xml" value="0.25" />
+        <entry key="..\:/Projects/MintThursday/app/src/main/res/layout/activity_show_recipe.xml" value="0.24010416666666667" />
         <entry key="..\:/Projects/MintThursday/app/src/main/res/layout/dropdown_menu_ingredient_unit.xml" value="0.25416666666666665" />
+        <entry key="..\:/Projects/MintThursday/app/src/main/res/layout/menu_main_activity_toolbar.xml" value="0.24010416666666667" />
         <entry key="..\:/Projects/MintThursday/app/src/main/res/layout/view_ingredient.xml" value="0.2" />
         <entry key="..\:/Projects/MintThursday/app/src/main/res/layout/view_recipe.xml" value="0.25416666666666665" />
         <entry key="..\:/Projects/MintThursday/app/src/main/res/layout/view_step.xml" value="0.25416666666666665" />
+        <entry key="..\:/Projects/MintThursday/app/src/main/res/menu/menu_main_activity.xml" value="0.24010416666666667" />
       </map>
     </option>
   </component>
