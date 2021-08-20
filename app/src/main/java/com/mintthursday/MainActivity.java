@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private static final int REQUEST_CODE_MAIN_ACTIVITY = 1;
     private static final int REQUEST_CODE_EDIT_RECIPE = 2;
+    public static final String ARG_SHOW_RECIPE = "ARG_SHOW_RECIPE";
 
     private androidx.appcompat.view.ActionMode actionMode;
 
@@ -52,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onItemClick(Recipe recipe, int itemPosition) {
                 Toast.makeText(MainActivity.this, "It will be opened soon", Toast.LENGTH_LONG).show();
-                //Log.d("Mint", recipe.toString());
+                showRecipe(recipe);
             }
 
             @Override
@@ -104,6 +105,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
         recipeAdapter.setOnItemClickListenerRecipe(a);
+
+    }
+
+    private void showRecipe(Recipe recipe) {
+        Intent intent = new Intent(MainActivity.this, ShowRecipeActivity.class);
+        intent.putExtra(ARG_SHOW_RECIPE, recipe);
+        startActivity(intent);
 
     }
 

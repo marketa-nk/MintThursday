@@ -326,7 +326,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:itemCount="3"
-                tools:listitem="@layout/view_ingredient" />
+                tools:listitem="@layout/view_ingredient_edit" />
 
             <Button
                 android:id="@+id/btnAddStep"

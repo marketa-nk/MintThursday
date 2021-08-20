@@ -80,7 +80,7 @@ public class IngredientActivity extends AppCompatActivity {
     }
 
     private void initToolbar() {
-        Toolbar ingredientToolbar = findViewById(R.id.topAppBar);
+        Toolbar ingredientToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(ingredientToolbar);
         ingredientToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.IngredientViewHolder> {
+public class IngredientEditAdapter extends RecyclerView.Adapter<IngredientEditAdapter.IngredientEditViewHolder> {
     OnItemClickListenerIngredient ingredientListener;
     private List<Ingredient> ingredientList = new ArrayList<>();
 
@@ -49,14 +49,14 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
     @NonNull
     @NotNull
     @Override
-    public IngredientAdapter.IngredientViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
+    public IngredientEditAdapter.IngredientEditViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.view_ingredient, parent, false);
-        return new IngredientViewHolder(view);
+                .inflate(R.layout.view_ingredient_edit, parent, false);
+        return new IngredientEditViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(IngredientViewHolder holder, int position) {
+    public void onBindViewHolder(IngredientEditViewHolder holder, int position) {
         holder.bind(ingredientList.get(position));
 
     }
@@ -66,7 +66,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
         return ingredientList.size();
     }
 
-    class IngredientViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class IngredientEditViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView ingrName;
         private TextView ingrQty;
@@ -76,7 +76,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
         private ImageButton btnIngrRemove;
 
 
-        public IngredientViewHolder(@NonNull @NotNull View itemView) {
+        public IngredientEditViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
             ingrName = itemView.findViewById(R.id.ingr_name);
             ingrQty = itemView.findViewById(R.id.ingr_qty);

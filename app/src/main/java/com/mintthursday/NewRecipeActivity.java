@@ -17,9 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -39,7 +36,7 @@ public class NewRecipeActivity extends AppCompatActivity implements CategoryFrag
     TextView timeRecipe;
     RecyclerView ingrRecyclerView;
     RecyclerView stepsRecyclerView;
-    private IngredientAdapter ingredientAdapter;
+    private IngredientEditAdapter ingredientAdapter;
     private StepsAdapter stepsAdapter;
     private TextView editCategories;
 
@@ -148,7 +145,7 @@ public class NewRecipeActivity extends AppCompatActivity implements CategoryFrag
     private void initRecyclerViewIngredients() {
         RecyclerView ingrRecyclerView = findViewById(R.id.ingrRecyclerView);
         ingrRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        ingredientAdapter = new IngredientAdapter();
+        ingredientAdapter = new IngredientEditAdapter();
         ingrRecyclerView.setAdapter(ingredientAdapter);
         OnItemClickListenerIngredient l = (new OnItemClickListenerIngredient() {
             @Override

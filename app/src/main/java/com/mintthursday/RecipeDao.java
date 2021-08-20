@@ -16,8 +16,8 @@ public interface RecipeDao {
     @Query("SELECT * FROM recipe")
     List<Recipe> getAll();
 
-    @Query("SELECT * FROM recipe WHERE name = :name")
-    Recipe getByRecipe(String name);
+    @Query("SELECT * FROM recipe WHERE id = :id")
+    Recipe getById(long id);
 
     @Insert(onConflict = REPLACE)
     void insert(Recipe recipe);
