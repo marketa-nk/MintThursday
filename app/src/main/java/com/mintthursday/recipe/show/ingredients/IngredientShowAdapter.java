@@ -1,4 +1,4 @@
-package com.mintthursday;
+package com.mintthursday.recipe.show.ingredients;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +8,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.mintthursday.models.Ingredient;
+import com.mintthursday.R;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -15,7 +18,6 @@ import java.util.List;
 
 public class IngredientShowAdapter extends RecyclerView.Adapter<IngredientShowAdapter.IngredientShowViewHolder> {
 
-    OnItemClickListenerIngredient ingredientShowListener;
     private List<Ingredient> ingredientShowList = new ArrayList<>();
 
     @NonNull
@@ -60,7 +62,5 @@ public class IngredientShowAdapter extends RecyclerView.Adapter<IngredientShowAd
             ingrQty.setText(String.valueOf(ingredient.getQuantity()));
             ingrUnit.setText(ingredient.getUnit());
         }
-
-
     }
 }

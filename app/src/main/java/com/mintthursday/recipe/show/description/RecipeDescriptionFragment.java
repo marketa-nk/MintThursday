@@ -1,14 +1,16 @@
-package com.mintthursday;
+package com.mintthursday.recipe.show.description;
 
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.mintthursday.R;
+import com.mintthursday.models.Recipe;
 
 public class RecipeDescriptionFragment extends Fragment {
     private static final String ARG_RECIPE_DESCRIPTION = "ARG_RECIPE_DESCRIPTION";
@@ -28,7 +30,7 @@ public class RecipeDescriptionFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_recipe_description, container, false);
-        if(getArguments().getParcelable(ARG_RECIPE_DESCRIPTION)!=null){
+        if (getArguments().getParcelable(ARG_RECIPE_DESCRIPTION) != null) {
             recipe = (Recipe) getArguments().getParcelable(ARG_RECIPE_DESCRIPTION);
             TextView descriptionName = (TextView) view.findViewById(R.id.showDescriptionName);
             TextView descriptionCountPortions = (TextView) view.findViewById(R.id.showDescriptionCountPortions);

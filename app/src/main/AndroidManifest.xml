@@ -13,11 +13,11 @@
         android:theme="@style/Theme.MintThursday"
         tools:ignore="ExtraText">
         <activity
-            android:name=".ShowRecipeActivity"
+            android:name=".recipe.show.ShowRecipeActivity"
             android:exported="true" />
-        <activity android:name=".IngredientActivity" />
-        <activity android:name=".NewRecipeActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".recipe.creation.ingredientcreation.IngredientActivity" />
+        <activity android:name=".recipe.creation.NewRecipeActivity" />
+        <activity android:name=".recipelist.RecipeListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

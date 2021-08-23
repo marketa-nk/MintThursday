@@ -1,4 +1,4 @@
-package com.mintthursday;
+package com.mintthursday.recipe.creation.stepsadapter;
 
 import android.graphics.Color;
 import android.text.Editable;
@@ -12,6 +12,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.mintthursday.R;
+import com.mintthursday.models.Step;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -19,7 +22,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.StepsViewHolder> implements RecyclerRowMoveCallback.RecyclerRowMoveTouchHelper {
-    private List<Step> stepsList = new ArrayList<>();
+
+   private List<Step> stepsList = new ArrayList<>();
 
     public void setItems(List<Step> steps) {
         stepsList = steps;
@@ -33,8 +37,9 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.StepsViewHol
 
     public void clearItems() {
         stepsList.clear();
-        notifyDataSetChanged();
+        notifyDataSetChanged(); //fixme
     }
+
     public List<Step> getItems(){
         return stepsList;
     }

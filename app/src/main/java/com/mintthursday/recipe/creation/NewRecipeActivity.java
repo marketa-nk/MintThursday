@@ -1,18 +1,11 @@
-package com.mintthursday;
+package com.mintthursday.recipe.creation;
 
-import static com.mintthursday.IngredientActivity.ARG_INGREDIENT;
-import static com.mintthursday.IngredientActivity.ARG_POSITION;
-import static com.mintthursday.IngredientActivity.INTENT_RESULT_ARG_NAME;
-import static com.mintthursday.IngredientActivity.INTENT_RESULT_ARG_POSITION;
-import static com.mintthursday.IngredientActivity.INTENT_RESULT_ARG_QUANTITY;
-import static com.mintthursday.IngredientActivity.INTENT_RESULT_ARG_UNIT;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import static com.mintthursday.recipe.creation.ingredientcreation.IngredientActivity.ARG_INGREDIENT;
+import static com.mintthursday.recipe.creation.ingredientcreation.IngredientActivity.ARG_POSITION;
+import static com.mintthursday.recipe.creation.ingredientcreation.IngredientActivity.INTENT_RESULT_ARG_NAME;
+import static com.mintthursday.recipe.creation.ingredientcreation.IngredientActivity.INTENT_RESULT_ARG_POSITION;
+import static com.mintthursday.recipe.creation.ingredientcreation.IngredientActivity.INTENT_RESULT_ARG_QUANTITY;
+import static com.mintthursday.recipe.creation.ingredientcreation.IngredientActivity.INTENT_RESULT_ARG_UNIT;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -21,21 +14,42 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.mintthursday.database.AppDatabase;
+import com.mintthursday.models.Ingredient;
+import com.mintthursday.R;
+import com.mintthursday.models.Recipe;
+import com.mintthursday.database.RecipeDao;
+import com.mintthursday.models.Step;
+import com.mintthursday.recipe.creation.ingredientcreation.IngredientActivity;
+import com.mintthursday.recipe.creation.ingredientcreation.IngredientEditAdapter;
+import com.mintthursday.App;
+import com.mintthursday.recipe.creation.stepsadapter.RecyclerRowMoveCallback;
+import com.mintthursday.recipe.creation.stepsadapter.StepsAdapter;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class NewRecipeActivity extends AppCompatActivity implements CategoryFragment.NoticeDialogListener {
+public class NewRecipeActivity extends AppCompatActivity implements SelectCategoryFragment.NoticeDialogListener {
 
     public static final String ARG_RECIPE = "ARG_RECIPE";
-    private static int REQUEST_CODE_NEW_INGREDIENT = 1;
-    private static int REQUEST_CODE_EDIT_INGREDIENT = 2;
-    TextView nameRecipe;
-    TextView descriptionRecipe;
-    TextView qtyPortionRecipe;
-    TextView timeRecipe;
-    RecyclerView ingrRecyclerView;
-    RecyclerView stepsRecyclerView;
+
+    private static final int REQUEST_CODE_NEW_INGREDIENT = 1;
+    private static final int REQUEST_CODE_EDIT_INGREDIENT = 2;
+
+    private TextView nameRecipe;
+    private TextView descriptionRecipe;
+    private TextView qtyPortionRecipe;
+    private TextView timeRecipe;
+    private RecyclerView ingrRecyclerView;
+    private RecyclerView stepsRecyclerView;
     private IngredientEditAdapter ingredientAdapter;
     private StepsAdapter stepsAdapter;
     private TextView editCategories;
@@ -74,7 +88,7 @@ public class NewRecipeActivity extends AppCompatActivity implements CategoryFrag
             @Override
             public void onClick(View v) {
 
-                DialogFragment newFragment = new CategoryFragment();
+                DialogFragment newFragment = new SelectCategoryFragment();
                 newFragment.show(getSupportFragmentManager(), "abc");
 
 
@@ -94,7 +108,7 @@ public class NewRecipeActivity extends AppCompatActivity implements CategoryFrag
 
                 Intent intent;
                 intent = new Intent(NewRecipeActivity.this, IngredientActivity.class);
-                startActivityForResult(intent, REQUEST_CODE_NEW_INGREDIENT); //fixme
+                startActivityForResult(intent, REQUEST_CODE_NEW_INGREDIENT); //todo
 
             }
         });
@@ -147,7 +161,7 @@ public class NewRecipeActivity extends AppCompatActivity implements CategoryFrag
         ingrRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         ingredientAdapter = new IngredientEditAdapter();
         ingrRecyclerView.setAdapter(ingredientAdapter);
-        OnItemClickListenerIngredient l = (new OnItemClickListenerIngredient() {
+        IngredientEditAdapter.OnIngredientClickListener l = (new IngredientEditAdapter.OnIngredientClickListener() {
             @Override
             public void onItemClick(Ingredient ingredient, int itemPosition) {
                 Intent intent = new Intent(NewRecipeActivity.this, IngredientActivity.class);

@@ -15,27 +15,28 @@
     <string name="count_portion">Количество порций</string>
     <string name="time">Время приготовления</string>
     <string name="category">Категория рецепта</string>
-    <string name="categoryadd">Добавить категорию</string>
-    <string name="categorymin">Минимум 1 категория</string>
+    <string name="category_add">Добавить категорию</string>
+    <string name="category_min">Минимум 1 категория</string>
     <string name="ingredient">Ингредиент</string>
-    <string name="ingredientproducer">Производитель</string>
-    <string name="ingredientqty">Количество ингредиента</string>
-    <string name="ingredientunit">Единица измерения</string>
+    <string name="ingredient_producer">Производитель</string>
+    <string name="ingredient_qty">Количество ингредиента</string>
+    <string name="ingredient_unit">Единица измерения</string>
     <string name="ingredients">Ингредиенты</string>
-    <string name="ingredientsmin">Минимум 3 ингредиента</string>
-    <string name="ingredientsadd">Добавить ингредиент</string>
+    <string name="ingredients_min">Минимум 3 ингредиента</string>
+    <string name="ingredients_add">Добавить ингредиент</string>
     <string name="cooking">Способ приготовления</string>
-    <string name="cookingmin">Минимум 3 шага</string>
-    <string name="cookingadd">Напишите инструкцию…</string>
-    <string name="addstep">Добавить шаг</string>
+    <string name="cook">Приготовления</string>
+    <string name="cooking_min">Минимум 3 шага</string>
+    <string name="cooking_add">Напишите инструкцию…</string>
+    <string name="add_step">Добавить шаг</string>
     <string name="calories">Калории</string>
     <string name="carbohydrates">Углеводы</string>
     <string name="fats">Жиры</string>
     <string name="proteins">Белки</string>
-    <string name="nutritionalValue">Питательная ценность</string>
-    <string name="saveRecipe">Сохранить рецепт</string>
+    <string name="nutritional_value">Питательная ценность</string>
+    <string name="save_recipe">Сохранить рецепт</string>
 
-    <string-array name="ingredientUnits">
+    <string-array name="ingredient_units_list">
         <item>шт</item>
         <item>г</item>
         <item>мл</item>
@@ -48,8 +49,6 @@
 
 
     <string name="photo">Фото</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

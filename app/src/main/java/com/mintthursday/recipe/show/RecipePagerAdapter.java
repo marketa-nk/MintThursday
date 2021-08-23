@@ -1,25 +1,22 @@
-package com.mintthursday;
+package com.mintthursday.recipe.show;
 
-import android.content.Context;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.PagerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
+public class RecipePagerAdapter extends FragmentPagerAdapter {
+
+    //todo refactoring
     private final List<Fragment> mFragmentList = new ArrayList<>();
     private final List<String> mFragmentTitleList = new ArrayList<>();
 
-    private Context context;
-
-    public SampleFragmentPagerAdapter(FragmentManager fm, Context context) {
+    public RecipePagerAdapter(FragmentManager fm) {
         super(fm);
-        this.context = context;
     }
 
     @NonNull
@@ -37,6 +34,7 @@ public class SampleFragmentPagerAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         return mFragmentTitleList.get(position);
     }
+
     @Override
     public int getCount() {
         return mFragmentList.size();

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".NewRecipeActivity">
+    tools:context=".recipe.creation.NewRecipeActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -212,7 +212,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:text="@string/categorymin" />
+                android:text="@string/category_min" />
 
             <TextView
                 android:id="@+id/categories"
@@ -234,7 +234,7 @@
                 android:layout_marginTop="0dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginBottom="10dp"
-                android:hint="@string/categoryadd"
+                android:hint="@string/category_add"
                 app:endIconDrawable="@drawable/ic_baseline_clear_24"
                 app:endIconMode="clear_text"
                 app:startIconDrawable="@drawable/ic_baseline_add_circle_outline_24">
@@ -268,7 +268,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:text="@string/ingredientsmin" />
+                android:text="@string/ingredients_min" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/ingrRecyclerView"
@@ -286,7 +286,7 @@
                 android:layout_marginTop="0dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginBottom="10dp"
-                android:hint="@string/ingredientsadd"
+                android:hint="@string/ingredients_add"
                 app:endIconDrawable="@drawable/ic_baseline_clear_24"
                 app:endIconMode="clear_text"
                 app:startIconDrawable="@drawable/ic_baseline_add_circle_outline_24">
@@ -319,7 +319,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:text="@string/cookingmin" />
+                android:text="@string/cooking_min" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/stepsRecyclerView"
@@ -336,7 +336,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
                 android:gravity="start|center"
-                android:text="@string/addstep"
+                android:text="@string/add_step"
                 android:textAllCaps="false"
                 android:textColor="?attr/colorOnSurface"
                 app:icon="@drawable/ic_add" />
@@ -346,7 +346,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:text="@string/saveRecipe"
+                android:text="@string/save_recipe"
                 android:textColor="@color/white"
                 />
 

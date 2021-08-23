@@ -1,4 +1,4 @@
-package com.mintthursday;
+package com.mintthursday.database.converters;
 
 import androidx.room.TypeConverter;
 

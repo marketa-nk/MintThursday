@@ -1,4 +1,4 @@
-package com.mintthursday;
+package com.mintthursday.recipelist;
 
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.recyclerview.widget.RecyclerView;
@@ -9,15 +9,18 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.mintthursday.R;
+import com.mintthursday.models.Recipe;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder> {
 
     private List<Recipe> recipeList = new ArrayList<>();
-    private OnItemClickListenerRecipe recipeListener;
+    private OnRecipeClickListener recipeListener;
 
-    public void setOnItemClickListenerRecipe(final OnItemClickListenerRecipe itemClickListenerRecipe) {
+    public void setOnItemClickListenerRecipe(final OnRecipeClickListener itemClickListenerRecipe) {
         this.recipeListener = itemClickListenerRecipe;
     }
 

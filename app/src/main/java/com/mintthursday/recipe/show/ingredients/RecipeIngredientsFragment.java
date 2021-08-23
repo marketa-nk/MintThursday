@@ -1,25 +1,22 @@
-package com.mintthursday;
+package com.mintthursday.recipe.show.ingredients;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.mintthursday.R;
+import com.mintthursday.models.Recipe;
 
 
 public class RecipeIngredientsFragment extends Fragment {
 
     private static final String ARG_RECIPE_INGREDIENTS = "ARG_RECIPE_INGREDIENTS";
+
     private Recipe recipe;
     private RecyclerView recyclerView;
     private IngredientShowAdapter ingredientShowAdapter;

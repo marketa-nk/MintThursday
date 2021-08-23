@@ -1,4 +1,4 @@
-package com.mintthursday;
+package com.mintthursday.recipe.creation.stepsadapter;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

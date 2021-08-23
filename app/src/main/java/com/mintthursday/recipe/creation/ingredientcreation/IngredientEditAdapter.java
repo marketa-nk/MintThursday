@@ -1,4 +1,4 @@
-package com.mintthursday;
+package com.mintthursday.recipe.creation.ingredientcreation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,16 +9,20 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.mintthursday.models.Ingredient;
+import com.mintthursday.R;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class IngredientEditAdapter extends RecyclerView.Adapter<IngredientEditAdapter.IngredientEditViewHolder> {
-    OnItemClickListenerIngredient ingredientListener;
+
+    private OnIngredientClickListener ingredientListener;
     private List<Ingredient> ingredientList = new ArrayList<>();
 
-    public void setOnItemClickListener(final OnItemClickListenerIngredient itemClickListener) {
+    public void setOnItemClickListener(final OnIngredientClickListener itemClickListener) {
         this.ingredientListener = itemClickListener;
     }
 
@@ -107,5 +111,7 @@ public class IngredientEditAdapter extends RecyclerView.Adapter<IngredientEditAd
 
     }
 
-
+    public interface OnIngredientClickListener {
+        void onItemClick(Ingredient ingredient, int itemPosition);
+    }
 }

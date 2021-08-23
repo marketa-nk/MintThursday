@@ -1,4 +1,4 @@
-package com.mintthursday;
+package com.mintthursday.models;
 
 public class Step {
     private String stepInstruction;

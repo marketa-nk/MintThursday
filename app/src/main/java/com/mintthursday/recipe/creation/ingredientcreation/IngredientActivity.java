@@ -1,4 +1,4 @@
-package com.mintthursday;
+package com.mintthursday.recipe.creation.ingredientcreation;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -14,6 +14,8 @@ import android.widget.EditText;
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
+import com.mintthursday.models.Ingredient;
+import com.mintthursday.R;
 
 public class IngredientActivity extends AppCompatActivity {
 
@@ -73,7 +75,7 @@ public class IngredientActivity extends AppCompatActivity {
             }
         });
 
-        String[] type = getResources().getStringArray(R.array.ingredientUnits);
+        String[] type = getResources().getStringArray(R.array.ingredient_units_list);
         ingrUnit.setAdapter(new ArrayAdapter<>(this, R.layout.dropdown_menu_ingredient_unit, type));
 
         initEditIngredient();

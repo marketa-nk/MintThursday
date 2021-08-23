@@ -1,6 +1,6 @@
-package com.mintthursday;
+package com.mintthursday.recipelist;
 
-import static com.mintthursday.NewRecipeActivity.ARG_RECIPE;
+import static com.mintthursday.recipe.creation.NewRecipeActivity.ARG_RECIPE;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,18 +16,21 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.mintthursday.App;
+import com.mintthursday.recipe.creation.NewRecipeActivity;
+import com.mintthursday.R;
+import com.mintthursday.models.Recipe;
+import com.mintthursday.recipe.show.ShowRecipeActivity;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class RecipeListActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final int REQUEST_CODE_MAIN_ACTIVITY = 1;
     private static final int REQUEST_CODE_EDIT_RECIPE = 2;
     public static final String ARG_SHOW_RECIPE = "ARG_SHOW_RECIPE";
 
     private androidx.appcompat.view.ActionMode actionMode;
-
-
 
     private RecipeAdapter recipeAdapter;
 
@@ -49,10 +52,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         recipeRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         recipeAdapter = new RecipeAdapter();
         recipeRecyclerView.setAdapter(recipeAdapter);
-        OnItemClickListenerRecipe a = (new OnItemClickListenerRecipe() {
+        OnRecipeClickListener a = (new OnRecipeClickListener() {
             @Override
             public void onItemClick(Recipe recipe, int itemPosition) {
-                Toast.makeText(MainActivity.this, "It will be opened soon", Toast.LENGTH_LONG).show();
                 showRecipe(recipe);
             }
 
@@ -79,13 +81,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         switch (item.getItemId()) {
                             case R.id.correct_recipe:
                                 openEditRecipe(recipe);
-                                Toast.makeText(MainActivity.this, "You want to correct recipe", Toast.LENGTH_SHORT).show();
                                 mode.finish();
                                 return true;
                             case R.id.delete_recipe:
                                 App.getInstance().getDatabase().recipeDao().delete(recipe);
                                 loadRecipes();
-                                Toast.makeText(MainActivity.this, "Recipe was deleted", Toast.LENGTH_SHORT).show();
                                 mode.finish();
                                 return true;
                             default:
@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void showRecipe(Recipe recipe) {
-        Intent intent = new Intent(MainActivity.this, ShowRecipeActivity.class);
+        Intent intent = new Intent(RecipeListActivity.this, ShowRecipeActivity.class);
         intent.putExtra(ARG_SHOW_RECIPE, recipe);
         startActivity(intent);
 

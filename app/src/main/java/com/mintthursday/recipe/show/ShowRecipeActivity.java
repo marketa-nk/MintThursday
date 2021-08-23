@@ -1,21 +1,24 @@
-package com.mintthursday;
+package com.mintthursday.recipe.show;
 
-import static com.mintthursday.MainActivity.ARG_SHOW_RECIPE;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
+import static com.mintthursday.recipelist.RecipeListActivity.ARG_SHOW_RECIPE;
 
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
+
 import com.google.android.material.tabs.TabLayout;
+import com.mintthursday.R;
+import com.mintthursday.models.Recipe;
+import com.mintthursday.recipe.show.description.RecipeDescriptionFragment;
+import com.mintthursday.recipe.show.ingredients.RecipeIngredientsFragment;
+import com.mintthursday.recipe.show.steps.RecipeStepsFragment;
 
 public class ShowRecipeActivity extends AppCompatActivity {
-    private SampleFragmentPagerAdapter tabAdapter;
+    private RecipePagerAdapter pagerAdapter;
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
@@ -35,11 +38,11 @@ public class ShowRecipeActivity extends AppCompatActivity {
         Fragment fragmentIngredients = RecipeIngredientsFragment.newInstance(recipe);
         Fragment fragmentSteps = RecipeStepsFragment.newInstance(recipe);
 
-        tabAdapter = new SampleFragmentPagerAdapter(getSupportFragmentManager(), ShowRecipeActivity.this);
-        tabAdapter.addFragment(fragmentDescription, "Описание");
-        tabAdapter.addFragment(fragmentIngredients, "Ингредиенты");
-        tabAdapter.addFragment(fragmentSteps, "Приготовление");
-        viewPager.setAdapter(tabAdapter);
+        pagerAdapter = new RecipePagerAdapter(getSupportFragmentManager());
+        pagerAdapter.addFragment(fragmentDescription, getResources().getString(R.string.description));
+        pagerAdapter.addFragment(fragmentIngredients, getResources().getString(R.string.ingredients));
+        pagerAdapter.addFragment(fragmentSteps, getResources().getString(R.string.cook));
+        viewPager.setAdapter(pagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
 
     }

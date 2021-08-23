@@ -1,14 +1,16 @@
-package com.mintthursday;
+package com.mintthursday.models;
 
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
+
+import com.mintthursday.database.converters.ListIngredientConverter;
+import com.mintthursday.database.converters.ListStringConverter;
 
 import java.util.List;
 

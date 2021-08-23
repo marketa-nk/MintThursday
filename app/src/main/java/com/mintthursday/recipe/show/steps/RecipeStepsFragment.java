@@ -1,4 +1,4 @@
-package com.mintthursday;
+package com.mintthursday.recipe.show.steps;
 
 import android.os.Bundle;
 
@@ -11,6 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.mintthursday.R;
+import com.mintthursday.models.Recipe;
+import com.mintthursday.models.Step;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +24,6 @@ public class RecipeStepsFragment extends Fragment {
     private Recipe recipe;
     private RecyclerView recyclerView;
     private StepsShowAdapter stepsShowAdapter;
-    private ImageView handle;
 
     public RecipeStepsFragment() {
     }

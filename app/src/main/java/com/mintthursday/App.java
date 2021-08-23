@@ -4,7 +4,10 @@ import android.app.Application;
 
 import androidx.room.Room;
 
+import com.mintthursday.database.AppDatabase;
+
 public class App extends Application {
+
     public static App instance;
 
     private AppDatabase database;
@@ -14,7 +17,7 @@ public class App extends Application {
         super.onCreate();
         instance = this;
         database = Room.databaseBuilder(this, AppDatabase.class, "database")
-                .allowMainThreadQueries()
+                .allowMainThreadQueries() //todo
                 .build();
     }
 
