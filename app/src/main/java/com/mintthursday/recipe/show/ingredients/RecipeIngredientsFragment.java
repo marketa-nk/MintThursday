@@ -4,9 +4,11 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
@@ -26,11 +28,16 @@ import java.util.List;
 public class RecipeIngredientsFragment extends Fragment {
 
     private static final String ARG_RECIPE_INGREDIENTS = "ARG_RECIPE_INGREDIENTS";
+    private final List<Ingredient> currentSelectedIngredients = new ArrayList<>();
     private double count;
     private Recipe recipe;
+    private List<Ingredient> ingredientList;
     private RecyclerView recyclerView;
     private IngredientShowAdapter ingredientShowAdapter;
-//    private List<Ingredient> currentSelectedIngredients;
+    private ImageButton btnMinus;
+    private ImageButton btnPlus;
+    private Button btnAddToCart;
+    private EditText countPortions;
     private final TextWatcher countTextWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -46,18 +53,28 @@ public class RecipeIngredientsFragment extends Fragment {
         public void afterTextChanged(Editable s) {
             String a = s.toString().trim();
             if (!a.isEmpty()) {
-                if (a.startsWith(".")){
+                if (a.startsWith(".")) {
                     a = "0" + a;
                     countPortions.setText(a);
                     countPortions.setSelection(countPortions.getText().length());
                 }
                 double count = Double.parseDouble(a);
                 if (count > 0) {
-                    List <Ingredient> ingredientList = recipe.getIngredients();
+                    List<Ingredient> ingredientList = recipe.getIngredients();
                     List<Ingredient> listNew = new ArrayList<>();
                     for (int i = 0; i < ingredientList.size(); i++) {
                         double qty = recipe.getIngredients().get(i).getQuantity() / recipe.getCountPortion() * count;
-                        listNew.add(new Ingredient(ingredientList.get(i).getName(), qty, ingredientList.get(i).getUnit()));
+                        Ingredient newIngredient = new Ingredient(ingredientList.get(i).getName(), qty, ingredientList.get(i).getUnit());
+                        listNew.add(newIngredient);
+                        if (!currentSelectedIngredients.isEmpty()) {
+                            for (int j = 0; j < currentSelectedIngredients.size(); j++) {
+                                if (newIngredient.getName().equals(currentSelectedIngredients.get(j).getName())) {
+                                    currentSelectedIngredients.set(j, newIngredient);
+                                    Log.i("Mint", currentSelectedIngredients.toString());
+                                    break;
+                                }
+                            }
+                        }
                     }
                     ingredientShowAdapter.setItems(listNew);
                     RecipeIngredientsFragment.this.count = count;
@@ -65,11 +82,7 @@ public class RecipeIngredientsFragment extends Fragment {
             }
         }
     };
-
-    private ImageButton btnMinus;
-    private ImageButton btnPlus;
-    private EditText countPortions;
-    View.OnClickListener onClickListener = new View.OnClickListener() {
+    private final View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
 
@@ -107,38 +120,41 @@ public class RecipeIngredientsFragment extends Fragment {
 
         btnMinus = view.findViewById(R.id.minus);
         btnPlus = view.findViewById(R.id.plus);
+        btnAddToCart = view.findViewById(R.id.addToCart);
         countPortions = view.findViewById(R.id.count);
 
         btnMinus.setOnClickListener(onClickListener);
         btnPlus.setOnClickListener(onClickListener);
         countPortions.addTextChangedListener(countTextWatcher);
+        countPortions.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(2)});
 
+        recipe = getArguments().getParcelable(ARG_RECIPE_INGREDIENTS);
+        ingredientList = recipe.getIngredients();
 
         recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        ingredientShowAdapter = new IngredientShowAdapter();
-//        ingredientShowAdapter = new IngredientShowAdapter(ingredientList, new IngredientShowAdapter.OnItemCheckListener() {
-//            @Override
-//            public void onItemCheck(Ingredient ingredient) {
-//                currentSelectedIngredients.add(ingredient);
-//                Log.i("mint", currentSelectedIngredients.toString());
-//            }
-//
-//            @Override
-//            public void onItemUncheck(Ingredient ingredient) {
-//                currentSelectedIngredients.remove(ingredient);
-//                Log.i("mint", currentSelectedIngredients.toString());
-//            }
-//        });
-        recyclerView.setAdapter(ingredientShowAdapter);
-        countPortions = view.findViewById(R.id.count);
-        countPortions.setFilters(new InputFilter[] {new DecimalDigitsInputFilter(2)});
-        recipe = getArguments().getParcelable(ARG_RECIPE_INGREDIENTS);
-        countPortions.setText(String.valueOf(recipe.getCountPortion()));
-        ingredientShowAdapter.setItems(recipe.getIngredients());
+        ingredientShowAdapter = new IngredientShowAdapter(ingredientList, new IngredientShowAdapter.OnItemCheckListener() {
+            @Override
+            public void onItemCheck(Ingredient ingredient) {
+                currentSelectedIngredients.add(ingredient);
+                btnAddToCart.setEnabled(true);
+                Log.i("Mint", currentSelectedIngredients.toString());
+            }
 
+            @Override
+            public void onItemUncheck(Ingredient ingredient) {
+                currentSelectedIngredients.remove(ingredient);
+                if (currentSelectedIngredients.isEmpty()){
+                    btnAddToCart.setEnabled(false);
+                }
+                Log.i("Mint", currentSelectedIngredients.toString());
+            }
+        });
+
+        countPortions.setText(String.valueOf(recipe.getCountPortion()));
         count = recipe.getCountPortion();
-        //currentSelectedIngredients = new ArrayList<>();
+
+        recyclerView.setAdapter(ingredientShowAdapter);
 
         return view;
     }

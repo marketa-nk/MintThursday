@@ -35,6 +35,7 @@
     <string name="proteins">Белки</string>
     <string name="nutritional_value">Питательная ценность</string>
     <string name="save_recipe">Сохранить рецепт</string>
+    <string name="add_to_cart">Добавить в покупки</string>
 
     <string-array name="ingredient_units_list">
         <item>шт</item>
