@@ -12,12 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MintThursday"
         tools:ignore="ExtraText">
-        <activity
-            android:name=".recipe.show.ShowRecipeActivity"
-            android:exported="true" />
+        <activity android:name=".recipe.show.ShowRecipeActivity" />
         <activity android:name=".recipe.creation.ingredientcreation.IngredientActivity" />
         <activity android:name=".recipe.creation.NewRecipeActivity" />
-        <activity android:name=".recipelist.RecipeListActivity">
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -1,6 +1,6 @@
 package com.mintthursday.recipe.show;
 
-import static com.mintthursday.recipelist.RecipeListActivity.ARG_SHOW_RECIPE;
+import static com.mintthursday.recipelist.RecipeListFragment.ARG_SHOW_RECIPE;
 
 import android.os.Bundle;
 import android.view.View;

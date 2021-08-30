@@ -4,14 +4,17 @@ import static com.mintthursday.recipe.creation.NewRecipeActivity.ARG_RECIPE;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
+import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,7 +27,7 @@ import com.mintthursday.recipe.show.ShowRecipeActivity;
 
 import java.util.List;
 
-public class RecipeListActivity extends AppCompatActivity implements View.OnClickListener {
+public class RecipeListFragment extends Fragment implements View.OnClickListener {
 
     private static final int REQUEST_CODE_MAIN_ACTIVITY = 1;
     private static final int REQUEST_CODE_EDIT_RECIPE = 2;
@@ -34,22 +37,28 @@ public class RecipeListActivity extends AppCompatActivity implements View.OnClic
 
     private RecipeAdapter recipeAdapter;
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
-        setSupportActionBar(myToolbar);
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab1);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_recipe_list, container, false);
+        Toolbar myToolbar = view.findViewById(R.id.myToolbar);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(myToolbar);
+        FloatingActionButton fab = view.findViewById(R.id.fab1);
         fab.setOnClickListener(this);
 
-        initRecyclerViewMain();
+        initRecyclerViewMain(view);
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         loadRecipes();
     }
 
-    private void initRecyclerViewMain() {
-        RecyclerView recipeRecyclerView = findViewById(R.id.recipe_recycler_view_main);
-        recipeRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+    private void initRecyclerViewMain(View view) {
+        RecyclerView recipeRecyclerView = view.findViewById(R.id.recipe_recycler_view_main);
+        recipeRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recipeAdapter = new RecipeAdapter();
         recipeRecyclerView.setAdapter(recipeAdapter);
         OnRecipeClickListener a = (new OnRecipeClickListener() {
@@ -63,7 +72,7 @@ public class RecipeListActivity extends AppCompatActivity implements View.OnClic
                 if (actionMode != null) {
                     return false;
                 }
-                actionMode = startSupportActionMode(new androidx.appcompat.view.ActionMode.Callback() {
+                actionMode =  ((AppCompatActivity) getActivity()).startSupportActionMode(new androidx.appcompat.view.ActionMode.Callback() {
                     @Override
                     public boolean onCreateActionMode(androidx.appcompat.view.ActionMode mode, Menu menu) {
                         mode.getMenuInflater().inflate(R.menu.menu_main_activity, menu);
@@ -96,11 +105,9 @@ public class RecipeListActivity extends AppCompatActivity implements View.OnClic
                     @Override
                     public void onDestroyActionMode(androidx.appcompat.view.ActionMode mode) {
                         actionMode = null;
-
                     }
                 });
                 return true;
-                //Toast.makeText(MainActivity.this, "LongClick", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -109,14 +116,14 @@ public class RecipeListActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void showRecipe(Recipe recipe) {
-        Intent intent = new Intent(RecipeListActivity.this, ShowRecipeActivity.class);
+        Intent intent = new Intent(getContext(), ShowRecipeActivity.class);
         intent.putExtra(ARG_SHOW_RECIPE, recipe);
         startActivity(intent);
 
     }
 
     private void openEditRecipe(Recipe recipe) {
-        Intent intent = new Intent(this, NewRecipeActivity.class);
+        Intent intent = new Intent(getContext(), NewRecipeActivity.class);
         intent.putExtra(ARG_RECIPE, recipe);
         startActivityForResult(intent, REQUEST_CODE_EDIT_RECIPE);
     }
@@ -131,7 +138,7 @@ public class RecipeListActivity extends AppCompatActivity implements View.OnClic
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.fab1:
-                Intent intent = new Intent(this, NewRecipeActivity.class);
+                Intent intent = new Intent(getContext(), NewRecipeActivity.class);
                 startActivityForResult(intent, REQUEST_CODE_MAIN_ACTIVITY);
                 break;
             default:
@@ -140,7 +147,7 @@ public class RecipeListActivity extends AppCompatActivity implements View.OnClic
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         loadRecipes();
     }
