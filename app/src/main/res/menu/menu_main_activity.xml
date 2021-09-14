@@ -3,9 +3,9 @@
     <item
         android:id="@+id/correct_recipe"
         android:icon="@drawable/ic_baseline_create_24"
-        android:title="Option 1" />
+        android:title="Редактировать" />
     <item
         android:id="@+id/delete_recipe"
         android:icon="@drawable/ic_baseline_delete_24"
-        android:title="Option 2" />
+        android:title="Удалить" />
 </menu>

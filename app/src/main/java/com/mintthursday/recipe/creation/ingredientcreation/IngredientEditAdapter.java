@@ -1,5 +1,6 @@
 package com.mintthursday.recipe.creation.ingredientcreation;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,7 @@ public class IngredientEditAdapter extends RecyclerView.Adapter<IngredientEditAd
         return ingredientList;
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void setItems(List<Ingredient> ingredients) {
         ingredientList = ingredients;
         notifyDataSetChanged();

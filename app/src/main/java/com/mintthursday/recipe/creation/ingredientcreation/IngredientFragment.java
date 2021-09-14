@@ -1,39 +1,37 @@
 package com.mintthursday.recipe.creation.ingredientcreation;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.material.textfield.MaterialAutoCompleteTextView;
-import com.mintthursday.models.Ingredient;
 import com.mintthursday.R;
+import com.mintthursday.models.Ingredient;
 
-public class IngredientActivity extends AppCompatActivity {
+import java.util.Objects;
+
+public class IngredientFragment extends Fragment {
 
     public static final String ARG_INGREDIENT = "ARG_INGREDIENT";
     public static final String ARG_POSITION = "ARG_POSITION";
-
-    public static final String INTENT_RESULT_ARG_NAME = "name";
-    public static final String INTENT_RESULT_ARG_QUANTITY = "quantity";
-    public static final String INTENT_RESULT_ARG_UNIT = "unit";
-    public static final String INTENT_RESULT_ARG_POSITION = "position";
+    public static final String BUN_INGREDIENT = "BUN_INGREDIENT";
+    public static final String BUN_ITEM_POSITION = "BUN_ITEM_POSITION";
+    public static final String REQ_INGREDIENT = "REQ_INGREDIENT";
 
     private Button btnSave;
     private EditText ingrQty;
     private EditText ingrName;
     private MaterialAutoCompleteTextView ingrUnit;
-
-    private Integer itemPosition;
-
     private final TextWatcher ingrTextWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -52,17 +50,29 @@ public class IngredientActivity extends AppCompatActivity {
 
         }
     };
+    private int itemPosition = -1;
+
+    public IngredientFragment() {
+    }
+
+    public static IngredientFragment newInstance(Ingredient ingredient, int itemPosition) {
+        IngredientFragment fragment = new IngredientFragment();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(ARG_INGREDIENT, ingredient);
+        bundle.putInt(ARG_POSITION, itemPosition);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ingredient);
-        initToolbar();
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_ingredient, container, false);
+        initToolbar(view);
 
-        btnSave = findViewById(R.id.btnSave);
-        ingrQty = findViewById(R.id.textInputEditTextQty);
-        ingrName = findViewById(R.id.textInputEditTextName);
-        ingrUnit = findViewById(R.id.spinnerIngredUnits);
+        btnSave = view.findViewById(R.id.btnSave);
+        ingrQty = view.findViewById(R.id.textInputEditTextQty);
+        ingrName = view.findViewById(R.id.textInputEditTextName);
+        ingrUnit = view.findViewById(R.id.spinnerIngredUnits);
 
         ingrName.addTextChangedListener(ingrTextWatcher);
         ingrQty.addTextChangedListener(ingrTextWatcher);
@@ -76,25 +86,27 @@ public class IngredientActivity extends AppCompatActivity {
         });
 
         String[] type = getResources().getStringArray(R.array.ingredient_units_list);
-        ingrUnit.setAdapter(new ArrayAdapter<>(this, R.layout.dropdown_menu_ingredient_unit, type));
-
-        initEditIngredient();
+        ingrUnit.setAdapter(new ArrayAdapter<>(this.getContext(), R.layout.dropdown_menu_ingredient_unit, type));
+        if (getArguments() != null && getArguments().getParcelable(ARG_INGREDIENT) != null) {
+            initEditIngredient();
+        }
+        return view;
     }
 
-    private void initToolbar() {
-        Toolbar ingredientToolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(ingredientToolbar);
+    private void initToolbar(View view) {
+        Toolbar ingredientToolbar = view.findViewById(R.id.toolbar);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(ingredientToolbar);
         ingredientToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onBackPressed();
+                ((AppCompatActivity) getActivity()).onBackPressed();
             }
         });
     }
 
     private void initEditIngredient() {
-        Ingredient ingredientEdit = getIntent().getParcelableExtra(ARG_INGREDIENT);
-        itemPosition = (Integer) getIntent().getSerializableExtra(ARG_POSITION);
+        Ingredient ingredientEdit = (Ingredient) getArguments().getParcelable(ARG_INGREDIENT);
+        itemPosition = getArguments().getInt(ARG_POSITION);
         if (ingredientEdit != null) {
             ingrName.setText(ingredientEdit.getName());
             ingrQty.setText(String.valueOf(ingredientEdit.getQuantity()));
@@ -112,16 +124,13 @@ public class IngredientActivity extends AppCompatActivity {
             quantity = 0;
         }
         String unit = String.valueOf(ingrUnit.getText());
-
-        Intent intent = new Intent();
-        if (itemPosition != null) {
-            intent.putExtra(INTENT_RESULT_ARG_POSITION, itemPosition);
+        Bundle result = new Bundle();
+        Ingredient ingredient = new Ingredient(name, quantity, unit);
+        result.putParcelable(BUN_INGREDIENT, ingredient);
+        result.putInt(BUN_ITEM_POSITION, itemPosition);
+        getParentFragmentManager().setFragmentResult(REQ_INGREDIENT, result);
+        if (getActivity() != null) {
+            getActivity().onBackPressed();
         }
-        intent.putExtra(INTENT_RESULT_ARG_NAME, name);
-        intent.putExtra(INTENT_RESULT_ARG_QUANTITY, quantity);
-        intent.putExtra(INTENT_RESULT_ARG_UNIT, unit);
-        setResult(RESULT_OK, intent);
-        finish();
-
     }
 }

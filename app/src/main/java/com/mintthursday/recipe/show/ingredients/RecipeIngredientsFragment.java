@@ -103,9 +103,6 @@ public class RecipeIngredientsFragment extends Fragment {
         }
     };
 
-    public RecipeIngredientsFragment() {
-    }
-
     public static RecipeIngredientsFragment newInstance(Recipe recipe) {
         RecipeIngredientsFragment fragment = new RecipeIngredientsFragment();
         Bundle bundle = new Bundle();

@@ -36,6 +36,7 @@
     <string name="nutritional_value">Питательная ценность</string>
     <string name="save_recipe">Сохранить рецепт</string>
     <string name="add_to_cart">Добавить в покупки</string>
+    <string name="photo">Фото</string>
 
     <string-array name="ingredient_units_list">
         <item>шт</item>
@@ -47,9 +48,5 @@
         <item>ст</item>
         <item>щеп</item>
     </string-array>
-
-
-    <string name="photo">Фото</string>
-
 
 </resources>

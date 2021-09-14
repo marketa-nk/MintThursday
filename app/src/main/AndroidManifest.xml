@@ -12,9 +12,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MintThursday"
         tools:ignore="ExtraText">
-        <activity android:name=".recipe.show.ShowRecipeActivity" />
-        <activity android:name=".recipe.creation.ingredientcreation.IngredientActivity" />
-        <activity android:name=".recipe.creation.NewRecipeActivity" />
         <activity
             android:name=".MainActivity"
             android:exported="true">

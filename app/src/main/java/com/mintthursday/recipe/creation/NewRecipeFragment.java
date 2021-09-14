@@ -1,97 +1,104 @@
 package com.mintthursday.recipe.creation;
 
-import static com.mintthursday.recipe.creation.ingredientcreation.IngredientActivity.ARG_INGREDIENT;
-import static com.mintthursday.recipe.creation.ingredientcreation.IngredientActivity.ARG_POSITION;
-import static com.mintthursday.recipe.creation.ingredientcreation.IngredientActivity.INTENT_RESULT_ARG_NAME;
-import static com.mintthursday.recipe.creation.ingredientcreation.IngredientActivity.INTENT_RESULT_ARG_POSITION;
-import static com.mintthursday.recipe.creation.ingredientcreation.IngredientActivity.INTENT_RESULT_ARG_QUANTITY;
-import static com.mintthursday.recipe.creation.ingredientcreation.IngredientActivity.INTENT_RESULT_ARG_UNIT;
+import static com.mintthursday.recipe.creation.ingredientcreation.IngredientFragment.BUN_INGREDIENT;
+import static com.mintthursday.recipe.creation.ingredientcreation.IngredientFragment.BUN_ITEM_POSITION;
+import static com.mintthursday.recipe.creation.ingredientcreation.IngredientFragment.REQ_INGREDIENT;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentResultListener;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.mintthursday.database.AppDatabase;
-import com.mintthursday.models.Ingredient;
-import com.mintthursday.R;
-import com.mintthursday.models.Recipe;
-import com.mintthursday.database.RecipeDao;
-import com.mintthursday.models.Step;
-import com.mintthursday.recipe.creation.ingredientcreation.IngredientActivity;
-import com.mintthursday.recipe.creation.ingredientcreation.IngredientEditAdapter;
 import com.mintthursday.App;
+import com.mintthursday.R;
+import com.mintthursday.Router;
+import com.mintthursday.database.AppDatabase;
+import com.mintthursday.database.RecipeDao;
+import com.mintthursday.models.Ingredient;
+import com.mintthursday.models.Recipe;
+import com.mintthursday.models.Step;
+import com.mintthursday.recipe.creation.ingredientcreation.IngredientEditAdapter;
 import com.mintthursday.recipe.creation.stepsadapter.RecyclerRowMoveCallback;
 import com.mintthursday.recipe.creation.stepsadapter.StepsAdapter;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class NewRecipeActivity extends AppCompatActivity implements SelectCategoryFragment.NoticeDialogListener {
+public class NewRecipeFragment extends Fragment implements SelectCategoryFragment.NoticeDialogListener {
 
-    public static final String ARG_RECIPE = "ARG_RECIPE";
-
-    private static final int REQUEST_CODE_NEW_INGREDIENT = 1;
-    private static final int REQUEST_CODE_EDIT_INGREDIENT = 2;
-
+    public static final String ARG_EDIT_RECIPE = "ARG_EDIT_RECIPE";
+    Set<String> chooseData = new HashSet<>();
     private TextView nameRecipe;
     private TextView descriptionRecipe;
     private TextView qtyPortionRecipe;
     private TextView timeRecipe;
-    private RecyclerView ingrRecyclerView;
-    private RecyclerView stepsRecyclerView;
     private IngredientEditAdapter ingredientAdapter;
     private StepsAdapter stepsAdapter;
     private TextView editCategories;
-
     private long idRecipe = 0;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public NewRecipeFragment() {
+    }
+
+    public static NewRecipeFragment newInstance(Recipe recipe) {
+        NewRecipeFragment fragment = new NewRecipeFragment();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(ARG_EDIT_RECIPE, recipe);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_recipe);
+    }
 
-        ImageView closeWindow = findViewById(R.id.close);
-
-
-        editCategories = findViewById(R.id.categories);
-        View butCattegory = findViewById(R.id.outlinedInputCategory);
-        View butIngredient = findViewById(R.id.outlinedInputIngredient);
-        View butAddStep = findViewById(R.id.btnAddStep);
-        View butSaveRecipe = findViewById(R.id.btnSaveRecipe);
-
-        nameRecipe = findViewById(R.id.textInputName);
-        descriptionRecipe = findViewById(R.id.textInputDescription);
-        qtyPortionRecipe = findViewById(R.id.textInputQtyPortions);
-        timeRecipe = findViewById(R.id.textInputTime);
-
-        ingrRecyclerView = findViewById(R.id.ingrRecyclerView);
-        stepsRecyclerView = findViewById(R.id.stepsRecyclerView);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_new_recipe, container, false);
+        Toolbar myToolbar = view.findViewById(R.id.myToolbar);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(myToolbar);
+        ImageView closeWindow = view.findViewById(R.id.close);
 
 
-        initRecyclerViewIngredients();
-        initRecyclerViewSteps();
+        editCategories = view.findViewById(R.id.categories);
+        View butCattegory = view.findViewById(R.id.outlinedInputCategory);
+        View butIngredient = view.findViewById(R.id.outlinedInputIngredient);
+        View butAddStep = view.findViewById(R.id.btnAddStep);
+        View butSaveRecipe = view.findViewById(R.id.btnSaveRecipe);
+
+        nameRecipe = view.findViewById(R.id.textInputName);
+        descriptionRecipe = view.findViewById(R.id.textInputDescription);
+        qtyPortionRecipe = view.findViewById(R.id.textInputQtyPortions);
+        timeRecipe = view.findViewById(R.id.textInputTime);
+
+        initRecyclerViewIngredients(view);
+        initRecyclerViewSteps(view);
         loadSteps();
-        initEditRecipe();
+        if (getArguments() != null && getArguments().getParcelable(ARG_EDIT_RECIPE) != null) {
+            Recipe recipe = (Recipe) getArguments().getParcelable(ARG_EDIT_RECIPE);
+            initEditRecipe(recipe);
+        }
+
 
         butCattegory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                DialogFragment newFragment = new SelectCategoryFragment();
-                newFragment.show(getSupportFragmentManager(), "abc");
-
-
+                DialogFragment newFragment = SelectCategoryFragment.newInstance(chooseData);
+                newFragment.show(getChildFragmentManager(), "abc");
             }
         });
         butCattegory.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -105,17 +112,13 @@ public class NewRecipeActivity extends AppCompatActivity implements SelectCatego
         butIngredient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Intent intent;
-                intent = new Intent(NewRecipeActivity.this, IngredientActivity.class);
-                startActivityForResult(intent, REQUEST_CODE_NEW_INGREDIENT); //todo
-
+                ((Router) getActivity()).showNewIngredient();
             }
         });
         closeWindow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onBackPressed();
+                requireActivity().onBackPressed();
             }
         });
         butAddStep.setOnClickListener(new View.OnClickListener() {
@@ -129,15 +132,30 @@ public class NewRecipeActivity extends AppCompatActivity implements SelectCatego
             public void onClick(View v) {
                 Recipe recipe = buildRecipe();
                 saveRecipe(recipe);
-                onBackPressed();
+                requireActivity().onBackPressed();
             }
         });
-
-
+        getParentFragmentManager().setFragmentResultListener(REQ_INGREDIENT, this, new FragmentResultListener() {
+            @Override
+            public void onFragmentResult(@NonNull String key, @NonNull Bundle bundle) {
+                Ingredient result = bundle.getParcelable(BUN_INGREDIENT);
+                if (result != null) {
+                    Ingredient ingredient = new Ingredient(result.getName(), result.getQuantity(), result.getUnit());
+                    int itemPosition = bundle.getInt(BUN_ITEM_POSITION);
+                    if (itemPosition == -1) {
+                        ingredientAdapter.addItem(ingredient);
+                    } else {
+                        ingredientAdapter.updateItem(ingredient, itemPosition);
+                    }
+                }
+            }
+        });
+        return view;
     }
 
-    private void initEditRecipe() {
-        Recipe recipe = getIntent().getParcelableExtra(ARG_RECIPE);
+    private void initEditRecipe(Recipe recipe) {
+        //todo не сохранеются шаги рцепта если открыть редактирование, добавить шшаг. нажать добавить ингредиент и вернуться
+        // также с другими полямино тебе везет
         if (recipe != null) {
             idRecipe = recipe.getId();
             nameRecipe.setText(recipe.getName());
@@ -156,26 +174,23 @@ public class NewRecipeActivity extends AppCompatActivity implements SelectCatego
 
     }
 
-    private void initRecyclerViewIngredients() {
-        RecyclerView ingrRecyclerView = findViewById(R.id.ingrRecyclerView);
-        ingrRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+    private void initRecyclerViewIngredients(View view) {
+        RecyclerView ingrRecyclerView = view.findViewById(R.id.ingrRecyclerView);
+        ingrRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         ingredientAdapter = new IngredientEditAdapter();
         ingrRecyclerView.setAdapter(ingredientAdapter);
         IngredientEditAdapter.OnIngredientClickListener l = (new IngredientEditAdapter.OnIngredientClickListener() {
             @Override
             public void onItemClick(Ingredient ingredient, int itemPosition) {
-                Intent intent = new Intent(NewRecipeActivity.this, IngredientActivity.class);
-                intent.putExtra(ARG_INGREDIENT, ingredient);
-                intent.putExtra(ARG_POSITION, itemPosition);
-                startActivityForResult(intent, REQUEST_CODE_EDIT_INGREDIENT);
+                ((Router) getActivity()).editIngredient(ingredient, itemPosition);
             }
         });
         ingredientAdapter.setOnItemClickListener(l);
     }
 
-    private void initRecyclerViewSteps() {
-        RecyclerView stepsRecyclerView = findViewById(R.id.stepsRecyclerView);
-        stepsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+    private void initRecyclerViewSteps(View view) {
+        RecyclerView stepsRecyclerView = view.findViewById(R.id.stepsRecyclerView);
+        stepsRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         stepsAdapter = new StepsAdapter();
         ItemTouchHelper.Callback callback = new RecyclerRowMoveCallback(stepsAdapter);
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
@@ -206,45 +221,15 @@ public class NewRecipeActivity extends AppCompatActivity implements SelectCatego
         return oneStep;
     }
 
-    public void showNoticeDialog() {
-        // Create an instance of the dialog fragment and show it
-        DialogFragment dialog = new DialogFragment();
-        dialog.show(getSupportFragmentManager(), "NoticeDialogFragment");
-    }
-
-
     @Override
     public void onDialogPositiveClick(DialogFragment dialog, Set<String> chooseData) {
+        this.chooseData = chooseData;
         editCategories.setVisibility(View.VISIBLE);
         editCategories.setText(toStringSetWithJoin(chooseData));
-
     }
 
     @Override
     public void onDialogNegativeClick(DialogFragment dialog) {
-
-
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if ((requestCode == REQUEST_CODE_EDIT_INGREDIENT || requestCode == REQUEST_CODE_NEW_INGREDIENT) && resultCode == Activity.RESULT_OK) {
-            if (data != null) {
-                String name = data.getStringExtra(INTENT_RESULT_ARG_NAME);
-                double quantity = data.getDoubleExtra(INTENT_RESULT_ARG_QUANTITY, 0);
-                String unit = data.getStringExtra(INTENT_RESULT_ARG_UNIT);
-                Integer itemPosition = (Integer) data.getSerializableExtra(INTENT_RESULT_ARG_POSITION);
-                Ingredient ingredient = new Ingredient(name, quantity, unit);
-                if (itemPosition != null) {
-                    ingredientAdapter.updateItem(ingredient, itemPosition);
-                } else {
-                    ingredientAdapter.addItem(ingredient);
-                }
-
-
-            }
-        }
     }
 
     private Recipe buildRecipe() {
