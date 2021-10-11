@@ -1,13 +1,11 @@
 package com.mintthursday.recipelist;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,17 +13,11 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mintthursday.App;
 import com.mintthursday.MainActivity;
-import com.mintthursday.Router;
-import com.mintthursday.recipe.creation.NewRecipeFragment;
 import com.mintthursday.R;
 import com.mintthursday.models.Recipe;
-import com.mintthursday.recipe.creation.ingredientcreation.IngredientFragment;
-import com.mintthursday.recipe.show.ShowRecipeFragment;
-
 import java.util.List;
 
 public class RecipeListFragment extends Fragment implements View.OnClickListener {
@@ -62,7 +54,7 @@ public class RecipeListFragment extends Fragment implements View.OnClickListener
             @Override
             public void onItemClick(Recipe recipe, int itemPosition) {
                 if(getActivity() instanceof MainActivity) {
-                    ((Router) getActivity()).showRecipe(recipe);
+                    App.getInstance().getRouter().navigateTo(MainActivity.Screens.INSTANCE.showRecipe(recipe));
                 }
             }
 
@@ -88,7 +80,7 @@ public class RecipeListFragment extends Fragment implements View.OnClickListener
                     public boolean onActionItemClicked(androidx.appcompat.view.ActionMode mode, MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.correct_recipe:
-                                ((Router) getActivity()).editRecipe(recipe);
+                                App.getInstance().getRouter().navigateTo(MainActivity.Screens.INSTANCE.editRecipe(recipe));
                                 mode.finish();
                                 return true;
                             case R.id.delete_recipe:
@@ -120,12 +112,8 @@ public class RecipeListFragment extends Fragment implements View.OnClickListener
     }
 
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.fab1:
-                ((Router) getActivity()).createNewRecipe();
-                break;
-            default:
-                break;
+        if (v.getId() == R.id.fab1) {
+            App.getInstance().getRouter().navigateTo(MainActivity.Screens.INSTANCE.createNewRecipe());
         }
     }
 }

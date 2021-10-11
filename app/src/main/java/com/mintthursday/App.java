@@ -4,13 +4,20 @@ import android.app.Application;
 
 import androidx.room.Room;
 
+import com.github.terrakok.cicerone.Cicerone;
+import com.github.terrakok.cicerone.NavigatorHolder;
+import com.github.terrakok.cicerone.Router;
 import com.mintthursday.database.AppDatabase;
 
 public class App extends Application {
 
-    public static App instance;
-
+    private static App instance;
+    private Cicerone<Router> cicerone;
     private AppDatabase database;
+
+    public static App getInstance() {
+        return instance;
+    }
 
     @Override
     public void onCreate() {
@@ -19,13 +26,18 @@ public class App extends Application {
         database = Room.databaseBuilder(this, AppDatabase.class, "database")
                 .allowMainThreadQueries() //todo
                 .build();
-    }
-
-    public static App getInstance() {
-        return instance;
+        cicerone = Cicerone.create();
     }
 
     public AppDatabase getDatabase() {
         return database;
+    }
+
+    public NavigatorHolder getNavigatorHolder() {
+        return cicerone.getNavigatorHolder();
+    }
+
+    public Router getRouter() {
+        return cicerone.getRouter();
     }
 }

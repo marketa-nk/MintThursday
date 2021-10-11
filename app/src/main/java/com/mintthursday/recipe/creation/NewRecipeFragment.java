@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,10 +20,9 @@ import androidx.fragment.app.FragmentResultListener;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.mintthursday.App;
+import com.mintthursday.MainActivity;
 import com.mintthursday.R;
-import com.mintthursday.Router;
 import com.mintthursday.database.AppDatabase;
 import com.mintthursday.database.RecipeDao;
 import com.mintthursday.models.Ingredient;
@@ -89,51 +87,27 @@ public class NewRecipeFragment extends Fragment implements SelectCategoryFragmen
         initRecyclerViewSteps(view);
         loadSteps();
         if (getArguments() != null && getArguments().getParcelable(ARG_EDIT_RECIPE) != null) {
-            Recipe recipe = (Recipe) getArguments().getParcelable(ARG_EDIT_RECIPE);
+            Recipe recipe = getArguments().getParcelable(ARG_EDIT_RECIPE);
             initEditRecipe(recipe);
         }
 
 
-        butCattegory.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DialogFragment newFragment = SelectCategoryFragment.newInstance(chooseData);
-                newFragment.show(getChildFragmentManager(), "abc");
+        butCattegory.setOnClickListener(v -> {
+            DialogFragment newFragment = SelectCategoryFragment.newInstance(chooseData);
+            newFragment.show(getChildFragmentManager(), "abc");
+        });
+        butCattegory.setOnFocusChangeListener((view1, hasFocus) -> {
+            if (view1.isInTouchMode() && hasFocus) {
+                view1.performClick();  // picks up first tap
             }
         });
-        butCattegory.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean hasFocus) {
-                if (view.isInTouchMode() && hasFocus) {
-                    view.performClick();  // picks up first tap
-                }
-            }
-        });
-        butIngredient.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((Router) getActivity()).showNewIngredient();
-            }
-        });
-        closeWindow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                requireActivity().onBackPressed();
-            }
-        });
-        butAddStep.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addStep();
-            }
-        });
-        butSaveRecipe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Recipe recipe = buildRecipe();
-                saveRecipe(recipe);
-                requireActivity().onBackPressed();
-            }
+        butIngredient.setOnClickListener(v -> App.getInstance().getRouter().navigateTo(MainActivity.Screens.INSTANCE.showNewIngredient()));
+        closeWindow.setOnClickListener(v -> requireActivity().onBackPressed());
+        butAddStep.setOnClickListener(v -> addStep());
+        butSaveRecipe.setOnClickListener(v -> {
+            Recipe recipe = buildRecipe();
+            saveRecipe(recipe);
+            requireActivity().onBackPressed();
         });
         getParentFragmentManager().setFragmentResultListener(REQ_INGREDIENT, this, new FragmentResultListener() {
             @Override
@@ -179,12 +153,7 @@ public class NewRecipeFragment extends Fragment implements SelectCategoryFragmen
         ingrRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         ingredientAdapter = new IngredientEditAdapter();
         ingrRecyclerView.setAdapter(ingredientAdapter);
-        IngredientEditAdapter.OnIngredientClickListener l = (new IngredientEditAdapter.OnIngredientClickListener() {
-            @Override
-            public void onItemClick(Ingredient ingredient, int itemPosition) {
-                ((Router) getActivity()).editIngredient(ingredient, itemPosition);
-            }
-        });
+        IngredientEditAdapter.OnIngredientClickListener l = ((ingredient, itemPosition) -> App.getInstance().getRouter().navigateTo(MainActivity.Screens.INSTANCE.editIngredient(ingredient, itemPosition)));
         ingredientAdapter.setOnItemClickListener(l);
     }
 
@@ -217,8 +186,7 @@ public class NewRecipeFragment extends Fragment implements SelectCategoryFragmen
     }
 
     private Step getOneStep() {
-        Step oneStep = new Step("");
-        return oneStep;
+        return new Step("");
     }
 
     @Override
@@ -271,6 +239,4 @@ public class NewRecipeFragment extends Fragment implements SelectCategoryFragmen
         }
         return result.toString();
     }
-
-
 }
