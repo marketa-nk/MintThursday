@@ -1,9 +1,7 @@
 package com.mintthursday.models
 
-class Step(var stepInstruction: String) {
-    override fun toString(): String {
-        return "Step{" +
-                "stepInstruction='" + stepInstruction + '\'' +
-                '}'
-    }
-}
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
+data class Step(var stepInstruction: String) : Parcelable

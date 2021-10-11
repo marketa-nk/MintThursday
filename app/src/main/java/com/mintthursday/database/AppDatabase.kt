@@ -1,0 +1,15 @@
+package com.mintthursday.database
+
+import androidx.room.Database
+import androidx.room.TypeConverters
+import com.mintthursday.database.converters.ListStringConverter
+import com.mintthursday.database.converters.ListIngredientConverter
+import com.mintthursday.database.converters.ListStepConverter
+import androidx.room.RoomDatabase
+import com.mintthursday.models.Recipe
+
+@Database(entities = [Recipe::class], version = 3)
+@TypeConverters(ListStringConverter::class, ListIngredientConverter::class, ListStepConverter::class)
+abstract class AppDatabase : RoomDatabase() {
+    abstract fun recipeDao(): RecipeDao
+}

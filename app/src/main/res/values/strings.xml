@@ -9,12 +9,12 @@
     <string name="new_recipe">Новый рецепт</string>
     <string name="shag1">Шаг 1. Введите данные рецепта</string>
     <string name="shag2">Шаг 2. Введите числовые показатели</string>
-    <string name="description">Описание *</string>
+    <string name="description">Описание*</string>
     <string name="necessarily">*Обязательно для заполнения</string>
     <string name="name">Название рецепта *</string>
-    <string name="count_portion">Количество порций</string>
-    <string name="time">Время приготовления</string>
-    <string name="category">Категория рецепта</string>
+    <string name="count_portion">Количество порций*</string>
+    <string name="time">Время приготовления*</string>
+    <string name="category">Категория рецепта*</string>
     <string name="category_add">Добавить категорию</string>
     <string name="category_min">Минимум 1 категория</string>
     <string name="ingredient">Ингредиент</string>
@@ -29,6 +29,7 @@
     <string name="cooking_min">Минимум 3 шага</string>
     <string name="cooking_add">Напишите инструкцию…</string>
     <string name="add_step">Добавить шаг</string>
+    <string name="link_add">Добавить ссылку на сайт</string>
     <string name="calories">Калории</string>
     <string name="carbohydrates">Углеводы</string>
     <string name="fats">Жиры</string>
@@ -37,6 +38,8 @@
     <string name="save_recipe">Сохранить рецепт</string>
     <string name="add_to_cart">Добавить в покупки</string>
     <string name="photo">Фото</string>
+    <string name="hyperlink">Recipe<a href="https://kamelena.ru/recipe/Lavash-s-tvorogom-i-yablokami">https://kamelena.ru/recipe/Lavash-s-tvorogom-i-yablokami</a></string>
+    <string name="open_link">Перейти на сайт</string>
 
     <string-array name="ingredient_units_list">
         <item>шт</item>
@@ -47,6 +50,22 @@
         <item>ст.л</item>
         <item>ст</item>
         <item>щеп</item>
+    </string-array>
+
+    <string-array name="category">
+        <item>Закуска</item>
+        <item>Суп</item>
+        <item>Основное Блюдо</item>
+        <item>Гарнир</item>
+        <item>Выпечка</item>
+        <item>Салат</item>
+        <item>Соусы и Приправы</item>
+        <item>Десерт</item>
+        <item>Напиток</item>
+        <item>Завтрак</item>
+        <item>Обед</item>
+        <item>Ужин</item>
+        <item>Другое</item>
     </string-array>
 
 </resources>

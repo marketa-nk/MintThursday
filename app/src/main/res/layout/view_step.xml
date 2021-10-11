@@ -3,28 +3,42 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+
+    android:layout_alignBaseline="@id/handle"
+    >
 
     <ImageView
         android:id="@+id/handle"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_gravity="center_vertical|end"
         android:layout_marginStart="20dp"
-        android:scaleType="center"
         android:src="@drawable/ic_baseline_drag_indicator_24"
-        android:visibility="visible" />
+        />
 
     <EditText
         android:id="@+id/step"
-        style="@style/Base.CardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="0dp"
         android:layout_marginBottom="5dp"
         android:layout_weight="1"
+        android:textSize="16sp"
         android:hint="@string/cooking_add"
         android:inputType="textMultiLine"
-        android:textColor="@color/cardview_shadow_start_color" />
+        android:layout_gravity="bottom"
+        android:textColor="@color/cardview_dark_background" />
+
+    <ImageButton
+        android:id="@+id/step_remove"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:layout_margin="10dp"
+        android:layout_gravity="bottom"
+        android:src="@drawable/ic_baseline_clear_24"
+        android:background="@color/white"
+        />
+
 </androidx.appcompat.widget.LinearLayoutCompat>

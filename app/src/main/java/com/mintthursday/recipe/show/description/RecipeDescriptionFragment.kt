@@ -1,46 +1,62 @@
-package com.mintthursday.recipe.show.description;
+package com.mintthursday.recipe.show.description
 
-import android.os.Bundle;
+import android.content.Intent
+import android.net.Uri
+import android.os.Bundle
+import android.os.Parcelable
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
+import com.mintthursday.R
+import com.mintthursday.models.Recipe
 
-import androidx.fragment.app.Fragment;
+class RecipeDescriptionFragment : Fragment() {
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
+    private val path: String = "/storage/sdcard0/DCIM/Restored/IMG_20190111_140034-COLLAGE.jpg"
 
-import com.mintthursday.R;
-import com.mintthursday.models.Recipe;
-
-public class RecipeDescriptionFragment extends Fragment {
-    private static final String ARG_RECIPE_DESCRIPTION = "ARG_RECIPE_DESCRIPTION";
-    private Recipe recipe;
-
-    public RecipeDescriptionFragment() {
-    }
-
-    public static RecipeDescriptionFragment newInstance(Recipe recipe) {
-        RecipeDescriptionFragment fragment = new RecipeDescriptionFragment();
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(ARG_RECIPE_DESCRIPTION, recipe);
-        fragment.setArguments(bundle);
-        return fragment;
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_recipe_description, container, false);
-        if (getArguments().getParcelable(ARG_RECIPE_DESCRIPTION) != null) {
-            recipe = (Recipe) getArguments().getParcelable(ARG_RECIPE_DESCRIPTION);
-            TextView descriptionName = (TextView) view.findViewById(R.id.showDescriptionName);
-            TextView descriptionCountPortions = (TextView) view.findViewById(R.id.showDescriptionCountPortions);
-            TextView descriptionTime = (TextView) view.findViewById(R.id.showDescriptionTime);
-            TextView descriptonDescription = (TextView) view.findViewById(R.id.showDescriptionDescription);
-            descriptionName.setText(recipe.getName());
-            descriptionCountPortions.setText("Количество порций: " + recipe.getCountPortion());
-            descriptionTime.setText("Время приготовления: " + recipe.getTime() + "минут");
-            descriptonDescription.setText("Описание: " + recipe.getDescription());
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val view = inflater.inflate(R.layout.fragment_recipe_description, container, false)
+        if (requireArguments().getParcelable<Parcelable?>(ARG_RECIPE_DESCRIPTION) != null) {
+            val recipe = requireArguments().getParcelable<Parcelable>(ARG_RECIPE_DESCRIPTION) as Recipe?
+            val descriptionName = view.findViewById<View>(R.id.showDescriptionName) as TextView
+            val photo = view.findViewById<View>(R.id.showDescriptionPhoto) as ImageView
+            val descriptionCountPortions = view.findViewById<View>(R.id.showDescriptionCountPortions) as TextView
+            val descriptionTime = view.findViewById<View>(R.id.showDescriptionTime) as TextView
+            val descriptionDescription = view.findViewById<View>(R.id.showDescriptionDescription) as TextView
+            val link = view.findViewById<View>(R.id.btn_showLink) as Button
+            Glide
+                    .with(view)
+                    .load(path)
+                    .into(photo)
+            descriptionName.text = recipe!!.name
+            descriptionCountPortions.text = StringBuilder("Количество порций: ${recipe.countPortion}")
+            descriptionTime.text = StringBuilder("Время приготовления: ${recipe.time} минут")
+            descriptionDescription.text = StringBuilder("Описание: ${recipe.description}")
+            if (recipe.link.trim() != "") {
+                link.setEnabled(true)
+                link.setOnClickListener {
+                    val browserIntent = Intent.makeMainSelectorActivity(Intent.ACTION_MAIN, Intent.CATEGORY_APP_BROWSER)
+                    browserIntent.data = Uri.parse(recipe.link)
+                    startActivity(browserIntent)
+                }
+            }
         }
-        return view;
+        return view
+    }
+
+    companion object {
+        private const val ARG_RECIPE_DESCRIPTION = "ARG_RECIPE_DESCRIPTION"
+        fun newInstance(recipe: Recipe?): RecipeDescriptionFragment {
+            val fragment = RecipeDescriptionFragment()
+            val bundle = Bundle()
+            bundle.putParcelable(ARG_RECIPE_DESCRIPTION, recipe)
+            fragment.arguments = bundle
+            return fragment
+        }
     }
 }

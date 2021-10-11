@@ -9,10 +9,20 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Projects/MintThursday/app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.14895833333333333" />
+        <entry key="..\:/Projects/MintThursday/app/src/main/res/drawable/ic_baseline_add_circle_outline_24.xml" value="0.25625" />
+        <entry key="..\:/Projects/MintThursday/app/src/main/res/drawable/ic_baseline_arrow_back_24.xml" value="0.25625" />
         <entry key="..\:/Projects/MintThursday/app/src/main/res/drawable/ic_baseline_clear_24.xml" value="0.25625" />
+        <entry key="..\:/Projects/MintThursday/app/src/main/res/drawable/ic_baseline_create_24.xml" value="0.25625" />
+        <entry key="..\:/Projects/MintThursday/app/src/main/res/drawable/ic_baseline_delete_24.xml" value="0.25625" />
+        <entry key="..\:/Projects/MintThursday/app/src/main/res/drawable/ic_baseline_drag_indicator_24.xml" value="0.25625" />
+        <entry key="..\:/Projects/MintThursday/app/src/main/res/drawable/ic_baseline_eco_24.xml" value="0.25625" />
+        <entry key="..\:/Projects/MintThursday/app/src/main/res/drawable/ic_baseline_format_list_bulleted_24.xml" value="0.25625" />
         <entry key="..\:/Projects/MintThursday/app/src/main/res/drawable/ic_baseline_minus_24.xml" value="0.26614583333333336" />
+        <entry key="..\:/Projects/MintThursday/app/src/main/res/drawable/ic_baseline_person_24.xml" value="0.25625" />
         <entry key="..\:/Projects/MintThursday/app/src/main/res/drawable/ic_baseline_remove_24.xml" value="0.26614583333333336" />
+        <entry key="..\:/Projects/MintThursday/app/src/main/res/drawable/ic_baseline_schedule_24.xml" value="0.25625" />
         <entry key="..\:/Projects/MintThursday/app/src/main/res/drawable/ic_baseline_speed_24.xml" value="0.25625" />
+        <entry key="..\:/Projects/MintThursday/app/src/main/res/drawable/ic_launcher_background.xml" value="0.25625" />
         <entry key="..\:/Projects/MintThursday/app/src/main/res/layout/activity_ingredient.xml" value="0.25416666666666665" />
         <entry key="..\:/Projects/MintThursday/app/src/main/res/layout/activity_main.xml" value="0.13802083333333334" />
         <entry key="..\:/Projects/MintThursday/app/src/main/res/layout/activity_new_recipe.xml" value="0.25" />
@@ -21,7 +31,7 @@
         <entry key="..\:/Projects/MintThursday/app/src/main/res/layout/dropdown_menu_ingredient_unit.xml" value="0.25416666666666665" />
         <entry key="..\:/Projects/MintThursday/app/src/main/res/layout/fragment_ingredient.xml" value="0.24010416666666667" />
         <entry key="..\:/Projects/MintThursday/app/src/main/res/layout/fragment_new.xml" value="0.24010416666666667" />
-        <entry key="..\:/Projects/MintThursday/app/src/main/res/layout/fragment_new_recipe.xml" value="0.24010416666666667" />
+        <entry key="..\:/Projects/MintThursday/app/src/main/res/layout/fragment_new_recipe.xml" value="0.3023543990086741" />
         <entry key="..\:/Projects/MintThursday/app/src/main/res/layout/fragment_recipe_description.xml" value="0.25416666666666665" />
         <entry key="..\:/Projects/MintThursday/app/src/main/res/layout/fragment_recipe_ingredients.xml" value="0.24010416666666667" />
         <entry key="..\:/Projects/MintThursday/app/src/main/res/layout/fragment_recipe_list.xml" value="0.152" />
