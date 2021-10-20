@@ -37,34 +37,41 @@ class NewRecipeFragment : Fragment(), NoticeDialogListener {
     private lateinit var qtyPortionRecipe: TextView
     private lateinit var timeRecipe: TextView
     private lateinit var link: TextView
-    private lateinit var ingredientEditAdapter: IngredientEditAdapter
-    private lateinit var stepsAdapter: StepsAdapter
+    private val ingredientEditAdapter: IngredientEditAdapter = IngredientEditAdapter()
+    private val stepsAdapter: StepsAdapter = StepsAdapter()
     private lateinit var editCategories: TextView
     private lateinit var butSaveRecipe: Button
     private var idRecipe: Long = 0
-    private var chooseData: Collection<String> = emptySet()
-    private var ingredientList: List<Ingredient> = emptyList()
-    private var stepList: List<Step>? = null
+    private var chooseCategories: Collection<String> = emptySet()
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putParcelableArrayList(INGREDIENT_LIST, ArrayList(ingredientEditAdapter.items))
         outState.putParcelableArrayList(STEP_LIST, ArrayList(stepsAdapter.items))
-        outState.putStringArrayList(CATEGORY_LIST, ArrayList(chooseData))
+        outState.putStringArrayList(CATEGORY_LIST, ArrayList(chooseCategories))
     }
 
-    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        super.onViewStateRestored(savedInstanceState)
-        if (savedInstanceState != null) {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if (savedInstanceState == null) {
+            val recipe = arguments?.getParcelable<Recipe>(ARG_EDIT_RECIPE)
+            if (recipe != null) {
+                ingredientEditAdapter.setItems(recipe.ingredients)
+                stepsAdapter.setItems(recipe.steps)
+                chooseCategories = recipe.category.splitToSet()
+            } else {
+                stepsAdapter.setItems(startSteps())
+            }
+        } else {
             savedInstanceState.getParcelableArrayList<Ingredient>(INGREDIENT_LIST)?.let {
-                ingredientList = it
                 ingredientEditAdapter.setItems(it)
             }
             savedInstanceState.getParcelableArrayList<Step>(STEP_LIST)?.let {
-                stepList = it
                 stepsAdapter.setItems(it)
             }
-            savedInstanceState.getStringArrayList(CATEGORY_LIST)?.let { setCategories(it.toSet()) }
+            savedInstanceState.getStringArrayList(CATEGORY_LIST)?.let {
+                chooseCategories = it.toSet()
+            }
         }
     }
 
@@ -96,8 +103,10 @@ class NewRecipeFragment : Fragment(), NoticeDialogListener {
             initEditRecipe(requireArguments().getParcelable(ARG_EDIT_RECIPE)!!)
         }
 
+        setCategories(chooseCategories)
+
         butCategory.setOnClickListener {
-            val newFragment: DialogFragment = SelectCategoryFragment.newInstance(chooseData)
+            val newFragment: DialogFragment = SelectCategoryFragment.newInstance(chooseCategories)
             newFragment.show(childFragmentManager, DIALOG_CATEGORY)
         }
 
@@ -128,21 +137,24 @@ class NewRecipeFragment : Fragment(), NoticeDialogListener {
                 val itemPosition = bundle.getInt(IngredientFragment.BUN_ITEM_POSITION)
                 if (itemPosition == -1) {
                     ingredientEditAdapter.addItem(ingredient)
-                    ingredientList = ingredientEditAdapter.items
                 } else {
                     ingredientEditAdapter.updateItem(ingredient, itemPosition)
                 }
-            }
-
-            if (ingredientEditAdapter.itemCount >= 3) {
-                chipIngr.visibility = View.GONE
+                changeVisibilityMinAmountOfIngredient()
             }
         })
         return view
     }
 
+    private fun changeVisibilityMinAmountOfIngredient() {
+        if (ingredientEditAdapter.itemCount >= 3) {
+            ingredientmin.visibility = View.GONE
+        } else {
+            ingredientmin.visibility = View.VISIBLE
+        }
+    }
+
     private fun initRecyclerViewIngredients(view: View) {
-        ingredientEditAdapter = IngredientEditAdapter()
         ingredientEditAdapter.setOnItemClickListener(object : OnIngredientClickListener {
             override fun onItemClick(ingredient: Ingredient, itemPosition: Int) {
                 router.navigateTo(Screens.editIngredient(ingredient, itemPosition))
@@ -152,7 +164,6 @@ class NewRecipeFragment : Fragment(), NoticeDialogListener {
             layoutManager = LinearLayoutManager(this.context)
             adapter = ingredientEditAdapter
         }
-        ingredientEditAdapter.setItems(ingredientList)
     }
 
     private fun initEditRecipe(recipe: Recipe) {
@@ -161,9 +172,6 @@ class NewRecipeFragment : Fragment(), NoticeDialogListener {
         descriptionRecipe.text = recipe.description
         qtyPortionRecipe.text = recipe.countPortion.toString()
         timeRecipe.text = recipe.time.toString()
-        setCategories(recipe.category.splitToSet())
-        ingredientEditAdapter.setItems(recipe.ingredients)
-        stepsAdapter.setItems(recipe.steps)
     }
 
     private fun String.splitToSet(delimiter: String = ", "): Set<String> {
@@ -173,21 +181,14 @@ class NewRecipeFragment : Fragment(), NoticeDialogListener {
     private fun initRecyclerViewSteps(view: View) {
         val stepsRecyclerView: RecyclerView = view.findViewById(R.id.stepsRecyclerView)
         stepsRecyclerView.layoutManager = LinearLayoutManager(this.context)
-        stepsAdapter = StepsAdapter()
         val callback: ItemTouchHelper.Callback = RecyclerRowMoveCallback(stepsAdapter)
         val touchHelper = ItemTouchHelper(callback)
         touchHelper.attachToRecyclerView(stepsRecyclerView)
         stepsRecyclerView.adapter = stepsAdapter
-        if (stepList != null) {
-            stepsAdapter.setItems(stepList.orEmpty())
-        } else {
-            loadSteps()
-        }
     }
 
-    private fun loadSteps() {
-        val steps = List(3, { Step("") })
-        stepsAdapter.setItems(steps)
+    private fun startSteps(): List<Step> {
+        return List(3, { Step("") })
     }
 
     private fun addStep() {
@@ -199,7 +200,7 @@ class NewRecipeFragment : Fragment(), NoticeDialogListener {
     }
 
     private fun setCategories(categories: Collection<String>) {
-        this.chooseData = categories
+        this.chooseCategories = categories
         editCategories.visibility = if (categories.isEmpty()) View.GONE else View.VISIBLE
         editCategories.text = categories.joinToString(", ")
     }
