@@ -51,6 +51,10 @@
         <entry key="..\:/Projects/MintThursday/app/src/main/res/menu/menu_main_activity.xml" value="0.24010416666666667" />
         <entry key="..\:/Projects/MintThursday/app/src/main/res/menu/menu_main_activity_context.xml" value="0.24010416666666667" />
         <entry key="..\:/Projects/MintThursday/app/src/main/res/menu/menu_main_activity_main.xml" value="0.2520833333333333" />
+        <entry key="..\:/nata/Projects/MintThursday/app/src/main/res/drawable/ic_baseline_format_list_bulleted_24.xml" value="0.151" />
+        <entry key="..\:/nata/Projects/MintThursday/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/nata/Projects/MintThursday/app/src/main/res/layout/fragment_ingredient.xml" value="0.11302083333333333" />
+        <entry key="..\:/nata/Projects/MintThursday/app/src/main/res/layout/view_step.xml" value="0.2520833333333333" />
       </map>
     </option>
   </component>

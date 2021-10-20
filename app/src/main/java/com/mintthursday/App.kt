@@ -2,17 +2,12 @@ package com.mintthursday
 
 import android.app.Application
 import androidx.room.Room
-import com.github.terrakok.cicerone.Cicerone
 import com.mintthursday.database.AppDatabase
 import com.mintthursday.models.Ingredient
 import com.mintthursday.models.Recipe
 import com.mintthursday.models.Step
 
 class App : Application() {
-
-    private val cicerone = Cicerone.create()
-    val router get() = cicerone.router
-    val navigatorHolder get() = cicerone.getNavigatorHolder()
 
     lateinit var database: AppDatabase
 

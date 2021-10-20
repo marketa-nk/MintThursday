@@ -29,8 +29,6 @@ import com.mintthursday.recipe.creation.stepsadapter.StepsAdapter
 
 class NewRecipeFragment : Fragment(), NoticeDialogListener {
 
-    private val router = App.instance.router
-
     private var _binding: FragmentNewRecipeBinding? = null
     private val binding get() = _binding!!
 
@@ -109,12 +107,9 @@ class NewRecipeFragment : Fragment(), NoticeDialogListener {
             binding.root.findNavController().navigate(R.id.action_newRecipeFragment_to_ingredientFragment)
         }
 
-
-        binding.close.setOnClickListener { router.exit() }//todo navigation
         binding.btnAddStep.setOnClickListener { addStep() }
         binding.btnSaveRecipe.setOnClickListener {
             saveRecipe(buildRecipe())
-//            router.exit()
             binding.root.findNavController().navigateUp()
         }
 
@@ -145,7 +140,6 @@ class NewRecipeFragment : Fragment(), NoticeDialogListener {
     private fun initRecyclerViewIngredients(binding: FragmentNewRecipeBinding) {
         ingredientEditAdapter.setOnItemClickListener(object : OnIngredientClickListener {
             override fun onItemClick(ingredient: Ingredient, itemPosition: Int) {
-//                router.navigateTo(Screens.editIngredient(ingredient, itemPosition))
                 binding.root.findNavController().navigate(R.id.action_newRecipeFragment_to_ingredientFragment, bundleOf(IngredientFragment.ARG_INGREDIENT to ingredient, IngredientFragment.ARG_POSITION to itemPosition))
             }
         })
@@ -242,24 +236,14 @@ class NewRecipeFragment : Fragment(), NoticeDialogListener {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null //todo зачем мы это сделали?
+        _binding = null
     }
 
     companion object {
-
         const val ARG_EDIT_RECIPE = "ARG_EDIT_RECIPE"
         const val INGREDIENT_LIST = "INGREDIENT_LIST"
         const val STEP_LIST = "STEP_LIST"
         const val CATEGORY_LIST = "CATEGORY_LIST"
         const val DIALOG_CATEGORY = "DIALOG_CATEGORY"
-
-
-//        fun newInstance(recipe: Recipe): NewRecipeFragment {
-//            val fragment = NewRecipeFragment()
-//            val bundle = Bundle()
-//            bundle.putParcelable(ARG_EDIT_RECIPE, recipe)
-//            fragment.arguments = bundle
-//            return fragment
-//        }
     }
 }

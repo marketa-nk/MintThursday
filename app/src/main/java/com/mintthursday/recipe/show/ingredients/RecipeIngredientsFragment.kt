@@ -48,21 +48,6 @@ class RecipeIngredientsFragment : Fragment() {
                     listIngredientChecked = listIngredientChecked.map {
                         IngredientChecked(it.ingredient, newCount, it.checked)
                     }.toMutableList()
-
-//                    for (i in ingredientList.indices) {
-//                        val qty = recipe.ingredients[i].quantity / recipe.countPortion * count
-//                        val newIngredient = Ingredient(ingredientList[i].name, qty, ingredientList[i].unit)
-//                        listNew.add(newIngredient)
-//                        if (currentSelectedIngredients.isNotEmpty()) {
-//                            for (j in currentSelectedIngredients.indices) {
-//                                if (newIngredient.name == currentSelectedIngredients[j].name) {
-//                                    currentSelectedIngredients[j] = newIngredient
-//                                    Log.i("Mint", currentSelectedIngredients.toString())
-//                                    break
-//                                }
-//                            }
-//                        }
-//                    }
                     ingredientShowAdapter.setItems(listIngredientChecked)
                     this@RecipeIngredientsFragment.count = newCount
                 }

@@ -42,7 +42,11 @@ class IngredientEditAdapter : RecyclerView.Adapter<IngredientEditViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IngredientEditViewHolder {
         val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.view_ingredient_edit, parent, false)
+            .inflate(
+                R.layout.view_ingredient_edit,
+                parent,
+                false
+            )
         return IngredientEditViewHolder(view)
     }
 

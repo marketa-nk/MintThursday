@@ -36,7 +36,7 @@ class RecipeAdapter : RecyclerView.Adapter<RecipeViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipeViewHolder {
         val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.view_recipe, parent, false)
+            .inflate(R.layout.view_recipe, parent, false)
         return RecipeViewHolder(view)
     }
 

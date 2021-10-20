@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/recipeListFragment">
+
+    <fragment
+        android:id="@+id/recipeListFragment"
+        android:name="com.mintthursday.recipelist.RecipeListFragment"
+        android:label="RecipeListFragment"
+        tools:layout="@layout/fragment_recipe_list">
+        <action
+            android:id="@+id/action_recipeListFragment_to_showRecipeFragment"
+            app:destination="@id/showRecipeFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_recipeListFragment_to_newRecipeFragment"
+            app:destination="@id/newRecipeFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_recipeListFragment_to_purchasesFragment"
+            app:destination="@id/purchasesFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/showRecipeFragment"
+        android:name="com.mintthursday.recipe.show.ShowRecipeFragment"
+        android:label="ShowRecipeFragment"
+        tools:layout="@layout/fragment_show_recipe" >
+        <action
+            android:id="@+id/action_showRecipeFragment_to_purchasesFragment"
+            app:destination="@id/purchasesFragment" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/recipeIngredientsFragment"
+        android:name="com.mintthursday.recipe.show.ingredients.RecipeIngredientsFragment"
+        android:label="RecipeIngredientsFragment"
+        tools:layout="@layout/fragment_recipe_ingredients" />
+    <fragment
+        android:id="@+id/recipeDescriptionFragment"
+        android:name="com.mintthursday.recipe.show.description.RecipeDescriptionFragment"
+        android:label="RecipeDescriptionFragment"
+        tools:layout="@layout/fragment_recipe_description" />
+    <fragment
+        android:id="@+id/recipeStepsFragment"
+        android:name="com.mintthursday.recipe.show.steps.RecipeStepsFragment"
+        android:label="RecipeStepsFragment"
+        tools:layout="@layout/fragment_recipe_steps" />
+    <fragment
+        android:id="@+id/newRecipeFragment"
+        android:name="com.mintthursday.recipe.creation.NewRecipeFragment"
+        android:label="NewRecipeFragment"
+        tools:layout="@layout/fragment_new_recipe">
+        <action
+            android:id="@+id/action_newRecipeFragment_to_ingredientFragment"
+            app:destination="@id/ingredientFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/ingredientFragment"
+        android:name="com.mintthursday.recipe.creation.ingredientcreation.IngredientFragment"
+        android:label="IngredientFragment"
+        tools:layout="@layout/fragment_ingredient" />
+    <fragment
+        android:id="@+id/purchasesFragment"
+        android:name="com.mintthursday.purchases.PurchasesFragment"
+        android:label="PurchasesFragment"
+        tools:layout="@layout/fragment_purchases" />
+</navigation>

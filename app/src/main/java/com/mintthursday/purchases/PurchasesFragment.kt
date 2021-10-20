@@ -65,9 +65,6 @@ class PurchasesFragment : Fragment() {
                 list.add(name)
                 list.addAll(purchases)
             }
-
-
-
         purchaseAdapter.submitList(list)
     }
 

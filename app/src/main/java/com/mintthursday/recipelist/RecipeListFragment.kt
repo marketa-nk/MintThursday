@@ -27,7 +27,7 @@ class RecipeListFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentRecipeListBinding.inflate(inflater, container, false)
 
@@ -40,7 +40,6 @@ class RecipeListFragment : Fragment() {
                 }
                 else -> false
             }
-
         }
 
         binding.fab.setOnClickListener {
@@ -63,7 +62,6 @@ class RecipeListFragment : Fragment() {
         recipeAdapter.setOnItemClickListenerRecipe(object : OnRecipeClickListener {
             override fun onItemClick(recipe: Recipe, position: Int) {
                 if (activity is MainActivity) {
-//                    instance.router.navigateTo(showRecipe(recipe))
                     binding.root.findNavController().navigate(
                         R.id.action_recipeListFragment_to_showRecipeFragment,
                         bundleOf(ShowRecipeFragment.ARG_RECIPE to recipe)
@@ -90,7 +88,6 @@ class RecipeListFragment : Fragment() {
                     override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
                         return when (item.itemId) {
                             R.id.correct_recipe -> {
-//                                instance.router.navigateTo(editRecipe(recipe))
                                 binding.root.findNavController().navigate(
                                     R.id.action_recipeListFragment_to_newRecipeFragment,
                                     bundleOf(NewRecipeFragment.ARG_EDIT_RECIPE to recipe)

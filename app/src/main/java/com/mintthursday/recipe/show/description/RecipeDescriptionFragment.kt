@@ -14,14 +14,10 @@ import com.mintthursday.R
 import com.mintthursday.databinding.FragmentRecipeDescriptionBinding
 import com.mintthursday.models.Recipe
 
-
 class RecipeDescriptionFragment : Fragment() {
 
     private var _binding: FragmentRecipeDescriptionBinding? = null
     private val binding get() = _binding!!
-
-
-//    private val path: String = "/storage/sdcard0/DCIM/Restored/IMG_20190111_140034-COLLAGE.jpg"
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
@@ -30,11 +26,6 @@ class RecipeDescriptionFragment : Fragment() {
         if (requireArguments().getParcelable<Parcelable?>(ARG_RECIPE_DESCRIPTION) != null) {
             val recipe = requireArguments().getParcelable<Parcelable>(ARG_RECIPE_DESCRIPTION) as Recipe?
 
-//            val photo = view.findViewById<View>(R.id.showDescriptionPhoto) as ImageView
-//            Glide
-//                    .with(view)
-//                    .load(path)
-//                    .into(photo)
             binding.showDescriptionName.text = recipe!!.name
             binding.showDescriptionCountPortions.text = StringBuilder("Количество порций: ${recipe.countPortion}")
             binding.showDescriptionTime.text = StringBuilder("Время приготовления: ${recipe.time} минут")
@@ -46,19 +37,14 @@ class RecipeDescriptionFragment : Fragment() {
                     val colorInt: Int = Color.parseColor("#00bfa5")
 
                     val defaultColors = CustomTabColorSchemeParams.Builder()
-                            .setToolbarColor(colorInt)
-                            .build()
+                        .setToolbarColor(colorInt)
+                        .build()
 
                     val customTabsIntent = CustomTabsIntent.Builder()
-                            .setDefaultColorSchemeParams(defaultColors)
-                            .setStartAnimations(requireContext(), R.anim.nav_default_enter_anim, R.anim.nav_default_exit_anim)
-                            .build()
-//                    builder.setExitAnimations(requireContext(), R.anim.slide_in_left, R.anim.slide_out_right);
+                        .setDefaultColorSchemeParams(defaultColors)
+                        .setStartAnimations(requireContext(), R.anim.nav_default_enter_anim, R.anim.nav_default_exit_anim)
+                        .build()
                     customTabsIntent.launchUrl(requireContext(), Uri.parse(recipe.link))
-
-//                    val browserIntent = Intent.makeMainSelectorActivity(Intent.ACTION_MAIN, Intent.CATEGORY_APP_BROWSER)
-//                    browserIntent.data = Uri.parse(recipe.link)
-//                    startActivity(browserIntent)
                 }
             }
         }

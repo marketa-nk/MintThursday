@@ -5,7 +5,6 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 
 class RecipePagerAdapter(fm: FragmentManager?) : FragmentPagerAdapter(fm!!) {
-    //todo refactoring
     private val fragmentList = mutableListOf<Fragment>()
     private val fragmentTitleList = mutableListOf<String>()
 

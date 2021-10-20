@@ -35,7 +35,7 @@ class IngredientFragment : Fragment() {
         override fun afterTextChanged(s: Editable) {}
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
         _binding = FragmentIngredientBinding.inflate(inflater, container, false)
 
@@ -59,7 +59,6 @@ class IngredientFragment : Fragment() {
     private fun initToolbar() {
         val ingredientToolbar: Toolbar = binding.toolbar
         (activity as? AppCompatActivity)?.setSupportActionBar(ingredientToolbar)
-//        ingredientToolbar.setNavigationOnClickListener { App.instance.router.exit() }
         ingredientToolbar.setNavigationOnClickListener { binding.root.findNavController().navigateUp() }
     }
 
@@ -81,7 +80,6 @@ class IngredientFragment : Fragment() {
         val bundle = bundleOf(BUN_INGREDIENT to ingredient, BUN_ITEM_POSITION to itemPosition)
 
         parentFragmentManager.setFragmentResult(REQ_INGREDIENT, bundle)
-//        App.instance.router.exit()
         requireView().findNavController().navigateUp()
     }
 
@@ -100,17 +98,10 @@ class IngredientFragment : Fragment() {
     }
 
     companion object {
-
         const val ARG_INGREDIENT = "ARG_INGREDIENT"
         const val ARG_POSITION = "ARG_POSITION"
         const val BUN_INGREDIENT = "BUN_INGREDIENT"
         const val BUN_ITEM_POSITION = "BUN_ITEM_POSITION"
         const val REQ_INGREDIENT = "REQ_INGREDIENT"
-
-        fun newInstance(ingredient: Ingredient?, itemPosition: Int): IngredientFragment {
-            val fragment = IngredientFragment()
-            fragment.arguments = bundleOf(ARG_INGREDIENT to ingredient, ARG_POSITION to itemPosition)
-            return fragment
-        }
     }
 }

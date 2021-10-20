@@ -7,7 +7,6 @@ import android.os.Bundle
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import com.mintthursday.R
-import java.util.*
 
 class SelectCategoryFragment : DialogFragment() {
     private lateinit var listCategory: List<String>
@@ -21,20 +20,13 @@ class SelectCategoryFragment : DialogFragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        // Verify that the host activity implements the callback interface
         listener = try {
-            // Instantiate the NoticeDialogListener so we can send events to the host
             if (parentFragment != null) {
                 parentFragment as NoticeDialogListener
             } else {
                 context as NoticeDialogListener
             }
-
-//            val parentFragment = parentFragment as? NoticeDialogListener
-//                    ?: context as NoticeDialogListener
-
         } catch (e: ClassCastException) {
-            // The activity doesn't implement the interface, throw exception
             throw ClassCastException(context.toString()
                     + " must implement NoticeDialogListener")
         }
@@ -55,9 +47,8 @@ class SelectCategoryFragment : DialogFragment() {
             }
         }
         builder.setTitle(R.string.category_add)
-                .setPositiveButton(R.string.add) { dialog, id -> listener?.onDialogPositiveClick(this@SelectCategoryFragment, chooseData) }
-                .setNegativeButton(R.string.cancel) { dialog, id -> listener?.onDialogNegativeClick(this@SelectCategoryFragment) }
-        // Create the AlertDialog object and return it
+            .setPositiveButton(R.string.add) { dialog, id -> listener?.onDialogPositiveClick(this@SelectCategoryFragment, chooseData) }
+            .setNegativeButton(R.string.cancel) { dialog, id -> listener?.onDialogNegativeClick(this@SelectCategoryFragment) }
         return builder.create()
     }
 

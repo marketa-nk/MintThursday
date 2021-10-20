@@ -5,7 +5,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class IngredientChecked(
-        val ingredient: Ingredient,
-        val count: Double,
-        val checked: Boolean
+    val ingredient: Ingredient,
+    val count: Double,
+    val checked: Boolean,
 ) : Parcelable

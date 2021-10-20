@@ -15,9 +15,6 @@ interface RecipeDao {
     @Query("SELECT * FROM recipe")
     fun getAllRecipes(): List<Recipe>
 
-    @Query("SELECT * FROM recipe WHERE id = :id")
-    fun getRecipeById(id: Long): Recipe?
-
     @Query("SELECT name FROM recipe WHERE id = :id")
     fun getRecipeNameById(id: Long): String
 }

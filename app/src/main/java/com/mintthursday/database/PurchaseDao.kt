@@ -8,9 +8,6 @@ import com.mintthursday.models.Purchase
 interface PurchaseDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertPurchase(vararg purchase: Purchase)
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertPurchase(purchases: List<Purchase>)
 
     @Update
