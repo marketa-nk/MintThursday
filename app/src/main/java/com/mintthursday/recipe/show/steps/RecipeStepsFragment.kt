@@ -8,20 +8,26 @@ import androidx.fragment.app.Fragment
 import com.mintthursday.R
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.mintthursday.databinding.FragmentRecipeStepsBinding
 import com.mintthursday.models.Recipe
 
 class RecipeStepsFragment : Fragment() {
+
+    private var _binding: FragmentRecipeStepsBinding? = null
+    private val binding get() = _binding!!
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_recipe_steps, container, false)
-        val recyclerView: RecyclerView = view.findViewById(R.id.recycler_view)
-        recyclerView.layoutManager = LinearLayoutManager(activity)
+
+        _binding = FragmentRecipeStepsBinding.inflate(inflater, container, false)
+
+        binding.recyclerView.layoutManager = LinearLayoutManager(activity)
         val stepsShowAdapter = StepsShowAdapter()
-        recyclerView.adapter = stepsShowAdapter
+        binding.recyclerView.adapter = stepsShowAdapter
         val recipe: Recipe? = requireArguments().getParcelable(ARG_RECIPE_STEPS)
         if (recipe != null) {
             stepsShowAdapter.setItems(recipe.steps)
         }
-        return view
+        return binding.root
     }
 
     companion object {

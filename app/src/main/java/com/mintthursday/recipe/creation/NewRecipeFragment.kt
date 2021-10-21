@@ -7,17 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnFocusChangeListener
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mintthursday.App
-import com.mintthursday.R
 import com.mintthursday.Screens
+import com.mintthursday.databinding.FragmentNewRecipeBinding
 import com.mintthursday.models.Ingredient
 import com.mintthursday.models.Recipe
 import com.mintthursday.models.Step
@@ -32,15 +29,11 @@ class NewRecipeFragment : Fragment(), NoticeDialogListener {
 
     private val router = App.instance.router
 
-    private lateinit var nameRecipe: TextView
-    private lateinit var descriptionRecipe: TextView
-    private lateinit var qtyPortionRecipe: TextView
-    private lateinit var timeRecipe: TextView
-    private lateinit var link: TextView
+    private var _binding: FragmentNewRecipeBinding? = null
+    private val binding get() = _binding!!
+
     private val ingredientEditAdapter: IngredientEditAdapter = IngredientEditAdapter()
     private val stepsAdapter: StepsAdapter = StepsAdapter()
-    private lateinit var editCategories: TextView
-    private lateinit var butSaveRecipe: Button
     private var idRecipe: Long = 0
     private var chooseCategories: Collection<String> = emptySet()
 
@@ -76,28 +69,17 @@ class NewRecipeFragment : Fragment(), NoticeDialogListener {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        val view = inflater.inflate(R.layout.fragment_new_recipe, container, false)
-        val closeWindow = view.findViewById<ImageView>(R.id.close)
-        val butCategory = view.findViewById<View>(R.id.filledInputCategory)
-        val butIngredient = view.findViewById<View>(R.id.filledInputIngredient)
-        val butAddStep = view.findViewById<View>(R.id.btnAddStep)
-        val chipIngr = view.findViewById<View>(R.id.ingredientmin)
 
-        butSaveRecipe = view.findViewById(R.id.btnSaveRecipe)
-        nameRecipe = view.findViewById(R.id.textInputName)
-        nameRecipe.addTextChangedListener(recipeTextWatcher)
-        descriptionRecipe = view.findViewById(R.id.textInputDescription)
-        descriptionRecipe.addTextChangedListener(recipeTextWatcher)
-        qtyPortionRecipe = view.findViewById(R.id.textInputQtyPortions)
-        qtyPortionRecipe.addTextChangedListener(recipeTextWatcher)
-        timeRecipe = view.findViewById(R.id.textInputTime)
-        timeRecipe.addTextChangedListener(recipeTextWatcher)
-        editCategories = view.findViewById(R.id.categories)
-        editCategories.addTextChangedListener(recipeTextWatcher)
-        link = view.findViewById(R.id.filledInputLink)
+        _binding = FragmentNewRecipeBinding.inflate(inflater, container, false)
 
-        initRecyclerViewIngredients(view)
-        initRecyclerViewSteps(view)
+        binding.textInputName.addTextChangedListener(recipeTextWatcher)
+        binding.textInputDescription.addTextChangedListener(recipeTextWatcher)
+        binding.textInputQtyPortions.addTextChangedListener(recipeTextWatcher)
+        binding.textInputTime.addTextChangedListener(recipeTextWatcher)
+        binding.categories.addTextChangedListener(recipeTextWatcher)
+
+        initRecyclerViewIngredients(binding)
+        initRecyclerViewSteps(binding)
 
         if (arguments != null && requireArguments().getParcelable<Recipe>(ARG_EDIT_RECIPE) != null) {
             initEditRecipe(requireArguments().getParcelable(ARG_EDIT_RECIPE)!!)
@@ -105,27 +87,27 @@ class NewRecipeFragment : Fragment(), NoticeDialogListener {
 
         setCategories(chooseCategories)
 
-        butCategory.setOnClickListener {
+        binding.filledInputCategory.setOnClickListener {
             val newFragment: DialogFragment = SelectCategoryFragment.newInstance(chooseCategories)
             newFragment.show(childFragmentManager, DIALOG_CATEGORY)
         }
 
-        butCategory.onFocusChangeListener = OnFocusChangeListener { v: View, hasFocus: Boolean ->
+        binding.filledInputCategory.onFocusChangeListener = OnFocusChangeListener { v: View, hasFocus: Boolean ->
             if (v.isInTouchMode && hasFocus) {
                 v.performClick() // picks up first tap
             }
         }
 
-        butIngredient.setOnClickListener { router.navigateTo(Screens.showNewIngredient()) }
-        butIngredient.onFocusChangeListener = OnFocusChangeListener { v: View, hasFocus: Boolean ->
+        binding.filledInputCategory.setOnClickListener { router.navigateTo(Screens.showNewIngredient()) }
+        binding.filledInputCategory.onFocusChangeListener = OnFocusChangeListener { v: View, hasFocus: Boolean ->
             if (v.isInTouchMode && hasFocus) {
                 v.performClick() // picks up first tap
             }
         }
 
-        closeWindow.setOnClickListener { router.exit() }
-        butAddStep.setOnClickListener { addStep() }
-        butSaveRecipe.setOnClickListener {
+        binding.close.setOnClickListener { router.exit() }
+        binding.btnAddStep.setOnClickListener { addStep() }
+        binding.btnSaveRecipe.setOnClickListener {
             saveRecipe(buildRecipe())
             router.exit()
         }
@@ -143,43 +125,41 @@ class NewRecipeFragment : Fragment(), NoticeDialogListener {
                 changeVisibilityMinAmountOfIngredient()
             }
         })
-        return view
+        return binding.root
     }
 
     private fun changeVisibilityMinAmountOfIngredient() {
         if (ingredientEditAdapter.itemCount >= 3) {
-            ingredientmin.visibility = View.GONE
+            binding.ingredientmin.visibility = View.GONE
         } else {
-            ingredientmin.visibility = View.VISIBLE
+            binding.ingredientmin.visibility = View.VISIBLE
         }
     }
 
-    private fun initRecyclerViewIngredients(view: View) {
+    private fun initRecyclerViewIngredients(binding: FragmentNewRecipeBinding) {
         ingredientEditAdapter.setOnItemClickListener(object : OnIngredientClickListener {
             override fun onItemClick(ingredient: Ingredient, itemPosition: Int) {
                 router.navigateTo(Screens.editIngredient(ingredient, itemPosition))
             }
         })
-        view.findViewById<RecyclerView>(R.id.ingrRecyclerView).apply {
-            layoutManager = LinearLayoutManager(this.context)
-            adapter = ingredientEditAdapter
-        }
+        binding.ingrRecyclerView.layoutManager = LinearLayoutManager(this.context)
+        binding.ingrRecyclerView.adapter = ingredientEditAdapter
     }
 
     private fun initEditRecipe(recipe: Recipe) {
         idRecipe = recipe.id
-        nameRecipe.text = recipe.name
-        descriptionRecipe.text = recipe.description
-        qtyPortionRecipe.text = recipe.countPortion.toString()
-        timeRecipe.text = recipe.time.toString()
+        binding.textInputName.setText(recipe.name)
+        binding.textInputDescription.setText(recipe.description)
+        binding.textInputQtyPortions.setText(recipe.countPortion.toString())
+        binding.textInputTime.setText(recipe.time.toString())
     }
 
     private fun String.splitToSet(delimiter: String = ", "): Set<String> {
         return this.split(delimiter).toSet()
     }
 
-    private fun initRecyclerViewSteps(view: View) {
-        val stepsRecyclerView: RecyclerView = view.findViewById(R.id.stepsRecyclerView)
+    private fun initRecyclerViewSteps(binding: FragmentNewRecipeBinding) {
+        val stepsRecyclerView: RecyclerView = binding.stepsRecyclerView
         stepsRecyclerView.layoutManager = LinearLayoutManager(this.context)
         val callback: ItemTouchHelper.Callback = RecyclerRowMoveCallback(stepsAdapter)
         val touchHelper = ItemTouchHelper(callback)
@@ -201,27 +181,27 @@ class NewRecipeFragment : Fragment(), NoticeDialogListener {
 
     private fun setCategories(categories: Collection<String>) {
         this.chooseCategories = categories
-        editCategories.visibility = if (categories.isEmpty()) View.GONE else View.VISIBLE
-        editCategories.text = categories.joinToString(", ")
+        binding.categories.visibility = if (categories.isEmpty()) View.GONE else View.VISIBLE
+        binding.categories.text = categories.joinToString(", ")
     }
 
     override fun onDialogNegativeClick(dialog: DialogFragment) {}
 
     private fun buildRecipe(): Recipe {
-        val name = nameRecipe.text.toString()
-        val description = descriptionRecipe.text.toString()
+        val name = binding.textInputName.text.toString()
+        val description = binding.textInputDescription.text.toString()
         var countPortion = 0
         var time = 0
         try {
-            countPortion = qtyPortionRecipe.text.toString().toInt()
-            time = timeRecipe.text.toString().toInt()
+            countPortion = binding.textInputQtyPortions.text.toString().toInt()
+            time = binding.textInputTime.text.toString().toInt()
         } catch (e: NumberFormatException) {
             e.printStackTrace()
         }
-        val category = editCategories.text.toString()
+        val category = binding.categories.text.toString()
         val ingredients: List<Ingredient> = ingredientEditAdapter.items
         val steps: List<Step> = stepsAdapter.items
-        val inputLink = link.text.toString()
+        val inputLink = binding.filledInputLink.text.toString()
         return Recipe(idRecipe, name, description, countPortion, time, category, ingredients, steps, inputLink)
     }
 
@@ -236,17 +216,22 @@ class NewRecipeFragment : Fragment(), NoticeDialogListener {
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
 
-            val nameInput = nameRecipe.text.toString().trim()
-            val descriptionInput = descriptionRecipe.text.toString().trim()
-            val quantityInput = qtyPortionRecipe.text.toString().trim()
-            val timeInput = timeRecipe.text.toString().trim()
-            val categoryInput = editCategories.text.toString().trim()
+            val nameInput = binding.textInputName.text.toString().trim()
+            val descriptionInput = binding.textInputDescription.text.toString().trim()
+            val quantityInput = binding.textInputQtyPortions.text.toString().trim()
+            val timeInput = binding.textInputTime.text.toString().trim()
+            val categoryInput = binding.categories.text.toString().trim()
 
-            butSaveRecipe.isEnabled = nameInput.isNotEmpty() && descriptionInput.isNotEmpty() && quantityInput.isNotEmpty() && timeInput.isNotEmpty() && categoryInput.isNotEmpty()
+            binding.btnSaveRecipe.isEnabled = nameInput.isNotEmpty() && descriptionInput.isNotEmpty() && quantityInput.isNotEmpty() && timeInput.isNotEmpty() && categoryInput.isNotEmpty()
         }
 
         override fun afterTextChanged(s: Editable?) {}
 
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {

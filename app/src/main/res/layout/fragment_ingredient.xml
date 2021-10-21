@@ -40,7 +40,7 @@
         app:startIconDrawable="@drawable/ic_baseline_eco_24">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/textInputEditTextName"
+            android:id="@+id/ingredientName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -76,7 +76,7 @@
         app:startIconDrawable="@drawable/ic_baseline_speed_24">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/textInputEditTextQty"
+            android:id="@+id/ingredientQty"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="numberDecimal" />
@@ -97,7 +97,7 @@
         app:startIconDrawable="@drawable/ic_baseline_format_list_bulleted_24">
 
         <com.google.android.material.textfield.MaterialAutoCompleteTextView
-            android:id="@+id/spinnerIngredUnits"
+            android:id="@+id/spinnerIngredientUnits"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="none"/>

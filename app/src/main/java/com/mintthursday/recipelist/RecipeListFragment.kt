@@ -9,26 +9,28 @@ import android.view.*
 import com.mintthursday.R
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
-import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mintthursday.MainActivity
+import com.mintthursday.databinding.FragmentRecipeListBinding
 import com.mintthursday.models.Recipe
 
 class RecipeListFragment : Fragment() {
+
+    private var _binding: FragmentRecipeListBinding? = null
+    private val binding get() = _binding!!
+
     private var actionMode: ActionMode? = null
     private lateinit var recipeAdapter: RecipeAdapter
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_recipe_list, container, false)
-        val myToolbar: Toolbar = view.findViewById(R.id.myToolbar)
-        (activity as? AppCompatActivity)?.setSupportActionBar(myToolbar)
-        val fab: FloatingActionButton = view.findViewById(R.id.fab1)
-        fab.setOnClickListener { instance.router.navigateTo(createNewRecipe()) }
-        initRecyclerViewMain(view)
-        return view
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        _binding = FragmentRecipeListBinding.inflate(inflater, container, false)
+
+
+        (activity as? AppCompatActivity)?.setSupportActionBar(binding.myToolbar)
+        binding.fab.setOnClickListener { instance.router.navigateTo(createNewRecipe()) }
+        initRecyclerViewMain(binding)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -36,11 +38,10 @@ class RecipeListFragment : Fragment() {
         loadRecipes()
     }
 
-    private fun initRecyclerViewMain(view: View) {
-        val recipeRecyclerView: RecyclerView = view.findViewById(R.id.recipe_recycler_view_main)
-        recipeRecyclerView.layoutManager = LinearLayoutManager(context)
+    private fun initRecyclerViewMain(binding: FragmentRecipeListBinding) {
+        binding.recipeRecyclerViewMain.layoutManager = LinearLayoutManager(context)
         recipeAdapter = RecipeAdapter()
-        recipeRecyclerView.adapter = recipeAdapter
+        binding.recipeRecyclerViewMain.adapter = recipeAdapter
         recipeAdapter.setOnItemClickListenerRecipe(object : OnRecipeClickListener {
             override fun onItemClick(recipe: Recipe, position: Int) {
                 if (activity is MainActivity) {

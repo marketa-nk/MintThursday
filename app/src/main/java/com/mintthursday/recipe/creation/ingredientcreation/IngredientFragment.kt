@@ -7,55 +7,48 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.mintthursday.App
 import com.mintthursday.R
+import com.mintthursday.databinding.FragmentIngredientBinding
 import com.mintthursday.models.Ingredient
 
 class IngredientFragment : Fragment() {
 
-    private lateinit var btnSave: Button
-    private lateinit var ingrQty: EditText
-    private lateinit var ingrName: EditText
-    private lateinit var ingrUnit: MaterialAutoCompleteTextView
+    private var _binding: FragmentIngredientBinding? = null
+    private val binding get() = _binding!!
+
     private var itemPosition = -1
 
     private val ingrTextWatcher: TextWatcher = object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
         override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-            val ingrInput = ingrName.text.toString().trim { it <= ' ' }
-            val qtyInput = ingrQty.text.toString().trim { it <= ' ' }
-            val unitInput = ingrUnit.text.toString().trim { it <= ' ' }
-            btnSave.isEnabled = ingrInput.isNotEmpty() && qtyInput.isNotEmpty() && unitInput.isNotEmpty()
+            val ingrInput = binding.ingredientName.text.toString().trim { it <= ' ' }
+            val qtyInput = binding.ingredientQty.text.toString().trim { it <= ' ' }
+            val unitInput = binding.spinnerIngredientUnits.text.toString().trim { it <= ' ' }
+            binding.btnSave.isEnabled = ingrInput.isNotEmpty() && qtyInput.isNotEmpty() && unitInput.isNotEmpty()
         }
 
         override fun afterTextChanged(s: Editable) {}
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_ingredient, container, false)
 
-        initToolbar(view)
+        _binding = FragmentIngredientBinding.inflate(inflater, container, false)
 
-        btnSave = view.findViewById(R.id.btnSave)
-        ingrQty = view.findViewById(R.id.textInputEditTextQty)
-        ingrName = view.findViewById(R.id.textInputEditTextName)
-        ingrUnit = view.findViewById(R.id.spinnerIngredUnits)
+        initToolbar()
 
-        ingrName.addTextChangedListener(ingrTextWatcher)
-        ingrQty.addTextChangedListener(ingrTextWatcher)
-        ingrUnit.addTextChangedListener(ingrTextWatcher)
+        binding.ingredientName.addTextChangedListener(ingrTextWatcher)
+        binding.ingredientQty.addTextChangedListener(ingrTextWatcher)
+        binding.spinnerIngredientUnits.addTextChangedListener(ingrTextWatcher)
 
         val type = resources.getStringArray(R.array.ingredient_units_list)
-        ingrUnit.setAdapter(ArrayAdapter(this.requireContext(), R.layout.dropdown_menu_ingredient_unit, type))
+        binding.spinnerIngredientUnits.setAdapter(ArrayAdapter(this.requireContext(), R.layout.dropdown_menu_ingredient_unit, type))
 
-        btnSave.setOnClickListener {
+        binding.btnSave.setOnClickListener {
             saveIngredient()
         }
 
@@ -63,8 +56,8 @@ class IngredientFragment : Fragment() {
         return view
     }
 
-    private fun initToolbar(view: View) {
-        val ingredientToolbar: Toolbar = view.findViewById(R.id.toolbar)
+    private fun initToolbar() {
+        val ingredientToolbar: Toolbar = binding.toolbar
         (activity as? AppCompatActivity)?.setSupportActionBar(ingredientToolbar)
         ingredientToolbar.setNavigationOnClickListener { App.instance.router.exit() }
     }
@@ -76,9 +69,9 @@ class IngredientFragment : Fragment() {
         itemPosition = arguments.getInt(ARG_POSITION)
 
         val ingredient = arguments.getParcelable<Ingredient>(ARG_INGREDIENT) ?: return
-        ingrName.setText(ingredient.name)
-        ingrQty.setText(ingredient.quantity.toString())
-        ingrUnit.setText(ingredient.unit)
+        binding.ingredientName.setText(ingredient.name)
+        binding.ingredientQty.setText(ingredient.quantity.toString())
+        binding.spinnerIngredientUnits.setText(ingredient.unit)
     }
 
     private fun saveIngredient() {
@@ -91,15 +84,15 @@ class IngredientFragment : Fragment() {
     }
 
     private fun buildIngredient(): Ingredient {
-        val name = ingrName.text.toString()
-        val stringQuantity = ingrQty.text.toString()
+        val name = binding.ingredientName.text.toString()
+        val stringQuantity = binding.ingredientQty.text.toString()
         val quantity: Double = if (stringQuantity.isNotEmpty()) {
             stringQuantity.toDouble()
         } else {
             0.0
         }
 
-        val unit = ingrUnit.text.toString()
+        val unit = binding.spinnerIngredientUnits.text.toString()
 
         return Ingredient(name, quantity, unit)
     }
@@ -114,7 +107,7 @@ class IngredientFragment : Fragment() {
 
         fun newInstance(ingredient: Ingredient?, itemPosition: Int): IngredientFragment {
             val fragment = IngredientFragment()
-            fragment.arguments = bundleOf(ARG_INGREDIENT to ingredient, ARG_POSITION to itemPosition) //todo bundleOf - done
+            fragment.arguments = bundleOf(ARG_INGREDIENT to ingredient, ARG_POSITION to itemPosition)
             return fragment
         }
     }

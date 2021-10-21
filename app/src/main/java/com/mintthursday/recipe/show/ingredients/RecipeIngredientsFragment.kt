@@ -8,14 +8,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.EditText
-import android.widget.ImageButton
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.mintthursday.DecimalDigitsInputFilter
-import com.mintthursday.R
+import com.mintthursday.databinding.FragmentRecipeIngredientsBinding
 import com.mintthursday.models.Ingredient
 import com.mintthursday.models.Recipe
 import com.mintthursday.recipe.show.ingredients.IngredientShowAdapter.OnItemCheckListener
@@ -23,12 +20,14 @@ import java.util.*
 
 class RecipeIngredientsFragment : Fragment() {
 
+    private var _binding: FragmentRecipeIngredientsBinding? = null
+    private val binding get() = _binding!!
+
     private val recipe: Recipe by lazy { arguments?.getParcelable(ARG_RECIPE_INGREDIENTS)!! }
 
     private val currentSelectedIngredients = mutableListOf<Ingredient>()
     private var count = 0.0
     private lateinit var ingredientShowAdapter: IngredientShowAdapter
-    private lateinit var countPortions: EditText
 
     private val countTextWatcher: TextWatcher = object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
@@ -38,8 +37,8 @@ class RecipeIngredientsFragment : Fragment() {
             if (a.isNotEmpty()) {
                 if (a.startsWith(".")) {
                     a = "0$a"
-                    countPortions.setText(a)
-                    countPortions.setSelection(countPortions.text.length)
+                    binding.count.setText(a)
+                    binding.count.setSelection(binding.count.text.length)
                 }
                 val count = a.toDouble()
                 if (count > 0) {
@@ -67,48 +66,43 @@ class RecipeIngredientsFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_recipe_ingredients, container, false)
-        val btnMinus = view.findViewById<ImageButton>(R.id.minus)
-        val btnPlus = view.findViewById<ImageButton>(R.id.plus)
-        val btnAddToCart: Button = view.findViewById(R.id.addToCart)
-        countPortions = view.findViewById(R.id.count)
 
-        btnMinus.setOnClickListener({
+        _binding = FragmentRecipeIngredientsBinding.inflate(inflater, container, false)
+
+        binding.btnMinus.setOnClickListener({
             if (count > 1) {
                 count--
-                countPortions.setText(count.toString())
+                binding.count.setText(count.toString())
             }
         })
-        btnPlus.setOnClickListener({
+        binding.btnPlus.setOnClickListener({
             count++
-            countPortions.setText(count.toString())
+            binding.count.setText(count.toString())
         })
 
-        countPortions.addTextChangedListener(countTextWatcher)
-        countPortions.setFilters(arrayOf<InputFilter>(DecimalDigitsInputFilter(2)))
+        binding.count.addTextChangedListener(countTextWatcher)
+        binding.count.setFilters(arrayOf<InputFilter>(DecimalDigitsInputFilter(2)))
 
-
-        val recyclerView: RecyclerView = view.findViewById(R.id.recycler_view)
-        recyclerView.layoutManager = LinearLayoutManager(activity)
+        binding.recyclerView.layoutManager = LinearLayoutManager(activity)
         ingredientShowAdapter = IngredientShowAdapter(recipe.ingredients, object : OnItemCheckListener {
             override fun onItemCheck(ingredient: Ingredient) {
                 currentSelectedIngredients.add(ingredient)
-                btnAddToCart.setEnabled(true)
+                binding.btnAddToCart.setEnabled(true)
                 Log.i("Mint", currentSelectedIngredients.toString())
             }
 
             override fun onItemUncheck(ingredient: Ingredient) {
                 currentSelectedIngredients.remove(ingredient)
                 if (currentSelectedIngredients.isEmpty()) {
-                    btnAddToCart.setEnabled(false)
+                    binding.btnAddToCart.setEnabled(false)
                 }
                 Log.i("Mint", currentSelectedIngredients.toString())
             }
         })
-        countPortions.setText(recipe.countPortion.toString())
+        binding.count.setText(recipe.countPortion.toString())
         count = recipe.countPortion.toDouble()
-        recyclerView.adapter = ingredientShowAdapter
-        return view
+        binding.recyclerView.adapter = ingredientShowAdapter
+        return binding.root
     }
 
     companion object {
