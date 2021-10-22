@@ -1,15 +1,19 @@
 package com.mintthursday.recipe.show.description
 
-import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.browser.customtabs.CustomTabColorSchemeParams
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.fragment.app.Fragment
+import com.mintthursday.R
 import com.mintthursday.databinding.FragmentRecipeDescriptionBinding
 import com.mintthursday.models.Recipe
+
 
 class RecipeDescriptionFragment : Fragment() {
 
@@ -38,9 +42,23 @@ class RecipeDescriptionFragment : Fragment() {
             if (recipe.link.trim() != "") {
                 binding.btnShowLink.setEnabled(true)
                 binding.btnShowLink.setOnClickListener {
-                    val browserIntent = Intent.makeMainSelectorActivity(Intent.ACTION_MAIN, Intent.CATEGORY_APP_BROWSER)
-                    browserIntent.data = Uri.parse(recipe.link)
-                    startActivity(browserIntent)
+
+                    val colorInt: Int = Color.parseColor("#00bfa5")
+
+                    val defaultColors = CustomTabColorSchemeParams.Builder()
+                            .setToolbarColor(colorInt)
+                            .build()
+
+                    val customTabsIntent = CustomTabsIntent.Builder()
+                            .setDefaultColorSchemeParams(defaultColors)
+                            .setStartAnimations(requireContext(), R.anim.nav_default_enter_anim, R.anim.nav_default_exit_anim)
+                            .build()
+//                    builder.setExitAnimations(requireContext(), R.anim.slide_in_left, R.anim.slide_out_right);
+                    customTabsIntent.launchUrl(requireContext(), Uri.parse(recipe.link))
+
+//                    val browserIntent = Intent.makeMainSelectorActivity(Intent.ACTION_MAIN, Intent.CATEGORY_APP_BROWSER)
+//                    browserIntent.data = Uri.parse(recipe.link)
+//                    startActivity(browserIntent)
                 }
             }
         }

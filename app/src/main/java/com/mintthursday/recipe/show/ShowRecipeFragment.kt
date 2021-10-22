@@ -36,6 +36,7 @@ class ShowRecipeFragment : Fragment(), Screen {
                 addFragment(RecipeIngredientsFragment.newInstance(recipe), resources.getString(R.string.ingredients))
                 addFragment(RecipeStepsFragment.newInstance(recipe), resources.getString(R.string.cook))
             }
+            binding.viewPager.setPageTransformer(true, ZoomOutPageTransformer())
             binding.tabLayout.setupWithViewPager(binding.viewPager)
         }
         return binding.root

@@ -4,12 +4,14 @@ import android.text.InputFilter
 import android.text.Spanned
 
 class DecimalDigitsInputFilter(private val decimalDigits: Int) : InputFilter {
-    override fun filter(source: CharSequence,
-                        start: Int,
-                        end: Int,
-                        dest: Spanned,
-                        dstart: Int,
-                        dend: Int): CharSequence? {
+    override fun filter(
+        source: CharSequence,
+        start: Int,
+        end: Int,
+        dest: Spanned,
+        dstart: Int,
+        dend: Int
+    ): CharSequence? {
         var dotPos = -1
         val len = dest.length
         for (i in 0 until len) {

@@ -24,12 +24,29 @@ class RecipeListFragment : Fragment() {
     private var actionMode: ActionMode? = null
     private lateinit var recipeAdapter: RecipeAdapter
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         _binding = FragmentRecipeListBinding.inflate(inflater, container, false)
 
-        (activity as? AppCompatActivity)?.setSupportActionBar(binding.myToolbar)
-//        binding.fab.setOnClickListener { instance.router.navigateTo(Screens.createNewRecipe()) }
-        binding.fab.setOnClickListener { binding.root.findNavController().navigate(R.id.action_recipeListFragment_to_newRecipeFragment) }
+        binding.myToolbar.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.cart -> {
+                    binding.root.findNavController()
+                        .navigate(R.id.action_recipeListFragment_to_purchasesFragment)
+                    true
+                }
+                else -> false
+            }
+
+        }
+
+        binding.fab.setOnClickListener {
+            binding.root.findNavController()
+                .navigate(R.id.action_recipeListFragment_to_newRecipeFragment)
+        }
         initRecyclerViewMain(binding)
         return binding.root
     }
@@ -47,7 +64,10 @@ class RecipeListFragment : Fragment() {
             override fun onItemClick(recipe: Recipe, position: Int) {
                 if (activity is MainActivity) {
 //                    instance.router.navigateTo(showRecipe(recipe))
-                    binding.root.findNavController().navigate(R.id.action_recipeListFragment_to_showRecipeFragment, bundleOf(ShowRecipeFragment.ARG_RECIPE to recipe))
+                    binding.root.findNavController().navigate(
+                        R.id.action_recipeListFragment_to_showRecipeFragment,
+                        bundleOf(ShowRecipeFragment.ARG_RECIPE to recipe)
+                    )
                 }
             }
 
@@ -55,9 +75,10 @@ class RecipeListFragment : Fragment() {
                 if (actionMode != null) {
                     return false
                 }
-                actionMode = (activity as? AppCompatActivity)?.startSupportActionMode(object : ActionMode.Callback {
+                actionMode = (activity as? AppCompatActivity)?.startSupportActionMode(object :
+                    ActionMode.Callback {
                     override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
-                        mode.menuInflater.inflate(R.menu.menu_main_activity, menu)
+                        mode.menuInflater.inflate(R.menu.menu_main_activity_context, menu)
                         mode.title = "Hi"
                         return true
                     }
@@ -70,12 +91,15 @@ class RecipeListFragment : Fragment() {
                         return when (item.itemId) {
                             R.id.correct_recipe -> {
 //                                instance.router.navigateTo(editRecipe(recipe))
-                                binding.root.findNavController().navigate(R.id.action_recipeListFragment_to_newRecipeFragment, bundleOf(NewRecipeFragment.ARG_EDIT_RECIPE to recipe))
+                                binding.root.findNavController().navigate(
+                                    R.id.action_recipeListFragment_to_newRecipeFragment,
+                                    bundleOf(NewRecipeFragment.ARG_EDIT_RECIPE to recipe)
+                                )
                                 mode.finish()
                                 true
                             }
                             R.id.delete_recipe -> {
-                                instance.database.recipeDao().delete(recipe)
+                                instance.database.recipeDao().deleteRecipe(recipe)
                                 loadRecipes()
                                 mode.finish()
                                 true
@@ -94,7 +118,7 @@ class RecipeListFragment : Fragment() {
     }
 
     private fun loadRecipes() {
-        val recipes = instance.database.recipeDao().getAll()
+        val recipes = instance.database.recipeDao().getAllRecipes()
         recipeAdapter.setItems(recipes)
     }
 }

@@ -15,8 +15,8 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mintthursday.App
-import com.mintthursday.databinding.FragmentNewRecipeBinding
 import com.mintthursday.R
+import com.mintthursday.databinding.FragmentNewRecipeBinding
 import com.mintthursday.models.Ingredient
 import com.mintthursday.models.Recipe
 import com.mintthursday.models.Step
@@ -89,28 +89,28 @@ class NewRecipeFragment : Fragment(), NoticeDialogListener {
 
         setCategories(chooseCategories)
 
+        binding.filledInputCategory.onFocusChangeListener = OnFocusChangeListener { v: View, hasFocus: Boolean ->
+            if (v.isInTouchMode && hasFocus) {
+                v.performClick() // picks up first tap
+            }
+        }
+
         binding.filledInputCategory.setOnClickListener {
             val newFragment: DialogFragment = SelectCategoryFragment.newInstance(chooseCategories)
             newFragment.show(childFragmentManager, DIALOG_CATEGORY)
         }
 
-        binding.filledInputCategory.onFocusChangeListener = OnFocusChangeListener { v: View, hasFocus: Boolean ->
+        binding.filledInputIngredient.onFocusChangeListener = OnFocusChangeListener { v: View, hasFocus: Boolean ->
             if (v.isInTouchMode && hasFocus) {
                 v.performClick() // picks up first tap
             }
         }
-
-//        binding.filledInputCategory..setOnClickListener { router.navigateTo(Screens.showNewIngredient()) }
-        binding.filledInputCategory.setOnClickListener {
+        binding.filledInputIngredient.setOnClickListener {
             binding.root.findNavController().navigate(R.id.action_newRecipeFragment_to_ingredientFragment)
         }
-        binding.filledInputCategory.onFocusChangeListener = OnFocusChangeListener { v: View, hasFocus: Boolean ->
-            if (v.isInTouchMode && hasFocus) {
-                v.performClick() // picks up first tap
-            }
-        }
 
-        binding.close.setOnClickListener { router.exit() }
+
+        binding.close.setOnClickListener { router.exit() }//todo navigation
         binding.btnAddStep.setOnClickListener { addStep() }
         binding.btnSaveRecipe.setOnClickListener {
             saveRecipe(buildRecipe())
@@ -214,7 +214,7 @@ class NewRecipeFragment : Fragment(), NoticeDialogListener {
 
     private fun saveRecipe(recipe: Recipe) {
         val db = App.instance.database
-        db.recipeDao().insert(recipe)
+        db.recipeDao().insertRecipe(recipe)
     }
 
     private val recipeTextWatcher: TextWatcher = object : TextWatcher {
@@ -229,7 +229,11 @@ class NewRecipeFragment : Fragment(), NoticeDialogListener {
             val timeInput = binding.textInputTime.text.toString().trim()
             val categoryInput = binding.categories.text.toString().trim()
 
-            binding.btnSaveRecipe.isEnabled = nameInput.isNotEmpty() && descriptionInput.isNotEmpty() && quantityInput.isNotEmpty() && timeInput.isNotEmpty() && categoryInput.isNotEmpty()
+            binding.btnSaveRecipe.isEnabled = nameInput.isNotEmpty() &&
+                    descriptionInput.isNotEmpty() &&
+                    quantityInput.isNotEmpty() &&
+                    timeInput.isNotEmpty() &&
+                    categoryInput.isNotEmpty()
         }
 
         override fun afterTextChanged(s: Editable?) {}
@@ -238,7 +242,7 @@ class NewRecipeFragment : Fragment(), NoticeDialogListener {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+        _binding = null //todo зачем мы это сделали?
     }
 
     companion object {

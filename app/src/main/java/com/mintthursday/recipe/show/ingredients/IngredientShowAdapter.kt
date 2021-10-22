@@ -1,27 +1,26 @@
 package com.mintthursday.recipe.show.ingredients
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.mintthursday.R
-import com.mintthursday.models.Ingredient
+import com.mintthursday.databinding.ViewIngredientShowBinding
+import com.mintthursday.models.IngredientChecked
 import com.mintthursday.recipe.show.ingredients.IngredientShowAdapter.IngredientShowViewHolder
 
 class IngredientShowAdapter(
-        private var ingredientShowList: List<Ingredient>,
-        private val onItemClick: OnItemCheckListener
+    private var ingredientShowList: List<IngredientChecked>,
+    private val onItemClick: OnItemCheckListener
 ) : RecyclerView.Adapter<IngredientShowViewHolder>() {
+
     interface OnItemCheckListener {
-        fun onItemCheck(ingredient: Ingredient)
-        fun onItemUncheck(ingredient: Ingredient)
+        fun onItemCheck(ingredientChecked: IngredientChecked, itemPosition: Int)
+        fun onItemUncheck(ingredientChecked: IngredientChecked, itemPosition: Int)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IngredientShowViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.view_ingredient_show, parent, false)
-        return IngredientShowViewHolder(view)
+
+        val binding = ViewIngredientShowBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return IngredientShowViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: IngredientShowViewHolder, position: Int) {
@@ -32,37 +31,28 @@ class IngredientShowAdapter(
         return ingredientShowList.size
     }
 
-    fun setItems(ingredients: List<Ingredient>) {
+    fun setItems(ingredients: List<IngredientChecked>) {
         ingredientShowList = ingredients
         notifyDataSetChanged()
     }
 
-    inner class IngredientShowViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var checkBox: CheckBox
-        private val ingrName: TextView
-        private val ingrQty: TextView
-        private val ingrUnit: TextView
-        fun bind(ingredient: Ingredient) {
-            ingrName.text = ingredient.name
-            ingrQty.text = ingredient.quantity.toString()
-            ingrUnit.text = ingredient.unit
-            checkBox.isClickable = false
-            itemView.setOnClickListener {
-                val checked = !checkBox.isChecked
-                checkBox.isChecked = checked
+    inner class IngredientShowViewHolder(private val binding: ViewIngredientShowBinding) : RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(ingredientChecked: IngredientChecked) {
+            val ingredient = ingredientChecked.ingredient
+            binding.ingrName.text = ingredient.name
+            binding.ingrQty.text = (ingredient.quantity * ingredientChecked.count).toString()
+            binding.ingrUnit.text = ingredient.unit
+            binding.checkBox.isChecked = ingredientChecked.checked
+            binding.checkBox.setOnClickListener {
+                val checked = !binding.checkBox.isChecked
+                binding.checkBox.isChecked = checked
                 if (checked) {
-                    onItemClick.onItemCheck(ingredient)
+                    onItemClick.onItemCheck(ingredientChecked, adapterPosition)
                 } else {
-                    onItemClick.onItemUncheck(ingredient)
+                    onItemClick.onItemUncheck(ingredientChecked, adapterPosition)
                 }
             }
-        }
-
-        init {
-            ingrName = itemView.findViewById(R.id.ingr_name)
-            ingrQty = itemView.findViewById(R.id.ingr_qty)
-            ingrUnit = itemView.findViewById(R.id.ingr_unit)
-            checkBox = itemView.findViewById(R.id.checkBox)
         }
     }
 }

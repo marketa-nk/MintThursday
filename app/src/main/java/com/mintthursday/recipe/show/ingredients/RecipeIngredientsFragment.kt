@@ -8,12 +8,15 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.mintthursday.App
 import com.mintthursday.DecimalDigitsInputFilter
+import com.mintthursday.R
 import com.mintthursday.databinding.FragmentRecipeIngredientsBinding
-import com.mintthursday.models.Ingredient
+import com.mintthursday.models.IngredientChecked
+import com.mintthursday.models.Purchase
 import com.mintthursday.models.Recipe
 import com.mintthursday.recipe.show.ingredients.IngredientShowAdapter.OnItemCheckListener
 import java.util.*
@@ -25,7 +28,7 @@ class RecipeIngredientsFragment : Fragment() {
 
     private val recipe: Recipe by lazy { arguments?.getParcelable(ARG_RECIPE_INGREDIENTS)!! }
 
-    private val currentSelectedIngredients = mutableListOf<Ingredient>()
+    private var listIngredientChecked = mutableListOf<IngredientChecked>()
     private var count = 0.0
     private lateinit var ingredientShowAdapter: IngredientShowAdapter
 
@@ -40,32 +43,38 @@ class RecipeIngredientsFragment : Fragment() {
                     binding.count.setText(a)
                     binding.count.setSelection(binding.count.text.length)
                 }
-                val count = a.toDouble()
-                if (count > 0) {
-                    val ingredientList = recipe.ingredients
-                    val listNew = mutableListOf<Ingredient>()
-                    for (i in ingredientList.indices) {
-                        val qty = recipe.ingredients[i].quantity / recipe.countPortion * count
-                        val newIngredient = Ingredient(ingredientList[i].name, qty, ingredientList[i].unit)
-                        listNew.add(newIngredient)
-                        if (currentSelectedIngredients.isNotEmpty()) {
-                            for (j in currentSelectedIngredients.indices) {
-                                if (newIngredient.name == currentSelectedIngredients[j].name) {
-                                    currentSelectedIngredients[j] = newIngredient
-                                    Log.i("Mint", currentSelectedIngredients.toString())
-                                    break
-                                }
-                            }
-                        }
-                    }
-                    ingredientShowAdapter.setItems(listNew)
-                    this@RecipeIngredientsFragment.count = count
+                val newCount = a.toDouble()
+                if (newCount > 0) {
+                    listIngredientChecked = listIngredientChecked.map {
+                        IngredientChecked(it.ingredient, newCount, it.checked)
+                    }.toMutableList()
+
+//                    for (i in ingredientList.indices) {
+//                        val qty = recipe.ingredients[i].quantity / recipe.countPortion * count
+//                        val newIngredient = Ingredient(ingredientList[i].name, qty, ingredientList[i].unit)
+//                        listNew.add(newIngredient)
+//                        if (currentSelectedIngredients.isNotEmpty()) {
+//                            for (j in currentSelectedIngredients.indices) {
+//                                if (newIngredient.name == currentSelectedIngredients[j].name) {
+//                                    currentSelectedIngredients[j] = newIngredient
+//                                    Log.i("Mint", currentSelectedIngredients.toString())
+//                                    break
+//                                }
+//                            }
+//                        }
+//                    }
+                    ingredientShowAdapter.setItems(listIngredientChecked)
+                    this@RecipeIngredientsFragment.count = newCount
                 }
             }
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
 
         _binding = FragmentRecipeIngredientsBinding.inflate(inflater, container, false)
 
@@ -83,25 +92,59 @@ class RecipeIngredientsFragment : Fragment() {
         binding.count.addTextChangedListener(countTextWatcher)
         binding.count.setFilters(arrayOf<InputFilter>(DecimalDigitsInputFilter(2)))
 
-        binding.recyclerView.layoutManager = LinearLayoutManager(activity)
-        ingredientShowAdapter = IngredientShowAdapter(recipe.ingredients, object : OnItemCheckListener {
-            override fun onItemCheck(ingredient: Ingredient) {
-                currentSelectedIngredients.add(ingredient)
-                binding.btnAddToCart.setEnabled(true)
-                Log.i("Mint", currentSelectedIngredients.toString())
-            }
+        recipe.ingredients.forEach {
+            listIngredientChecked.add(
+                IngredientChecked(
+                    it,
+                    recipe.countPortion.toDouble(),
+                    false
+                )
+            )
+        }
 
-            override fun onItemUncheck(ingredient: Ingredient) {
-                currentSelectedIngredients.remove(ingredient)
-                if (currentSelectedIngredients.isEmpty()) {
-                    binding.btnAddToCart.setEnabled(false)
+        binding.recyclerView.layoutManager = LinearLayoutManager(activity)
+        ingredientShowAdapter =
+            IngredientShowAdapter(listIngredientChecked, object : OnItemCheckListener {
+                override fun onItemCheck(ingredientChecked: IngredientChecked, itemPosition: Int) {
+                    listIngredientChecked.set(itemPosition, ingredientChecked.copy(checked = true))
+                    binding.btnAddToCart.setEnabled(true)
+                    Log.i("Mint", listIngredientChecked.toString())
                 }
-                Log.i("Mint", currentSelectedIngredients.toString())
-            }
-        })
+
+                override fun onItemUncheck(
+                    ingredientChecked: IngredientChecked,
+                    itemPosition: Int
+                ) {
+                    listIngredientChecked.set(itemPosition, ingredientChecked.copy(checked = false))
+                    if (listIngredientChecked.isEmpty()) {
+                        binding.btnAddToCart.setEnabled(false)
+                    }
+                    Log.i("Mint", listIngredientChecked.toString())
+                }
+            })
         binding.count.setText(recipe.countPortion.toString())
         count = recipe.countPortion.toDouble()
         binding.recyclerView.adapter = ingredientShowAdapter
+
+        binding.btnAddToCart.setOnClickListener {
+
+            val purchases = listIngredientChecked
+                .filter { it.checked }
+                .map { ingredientChecked ->
+                    Purchase(
+                        0,
+                        recipe.id,
+                        ingredientChecked.count,
+                        ingredientChecked.ingredient,
+                        false
+                    )
+                }
+
+            App.instance.database.purchaseDao().insertPurchase(purchases)
+
+            binding.root.findNavController()
+                .navigate(R.id.action_showRecipeFragment_to_purchasesFragment)
+        }
         return binding.root
     }
 

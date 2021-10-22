@@ -341,13 +341,6 @@
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/cookingmin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:text="@string/cooking_min" />
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/stepsRecyclerView"
                 android:layout_width="match_parent"
