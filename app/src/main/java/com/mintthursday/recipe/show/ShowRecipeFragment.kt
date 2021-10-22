@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
 import com.github.terrakok.cicerone.Screen
-import com.mintthursday.App
 import com.mintthursday.R
 import com.mintthursday.databinding.FragmentShowRecipeBinding
 import com.mintthursday.models.Recipe
@@ -25,7 +25,8 @@ class ShowRecipeFragment : Fragment(), Screen {
         _binding = FragmentShowRecipeBinding.inflate(inflater, container, false)
 
         (activity as AppCompatActivity?)!!.setSupportActionBar(binding.toolbar)
-        binding.toolbar.setNavigationOnClickListener { App.instance.router.exit() }
+//        binding.toolbar.setNavigationOnClickListener { App.instance.router.exit() }
+        binding.toolbar.setNavigationOnClickListener { binding.root.findNavController().navigateUp() }
 
         val recipe: Recipe? = requireArguments().getParcelable(ARG_RECIPE)
 
@@ -42,14 +43,14 @@ class ShowRecipeFragment : Fragment(), Screen {
 
     companion object {
 
-        private const val ARG_RECIPE = "ARG_RECIPE"
+        const val ARG_RECIPE = "ARG_RECIPE"
 
-        fun newInstance(recipe: Recipe): ShowRecipeFragment {
-            val fragment = ShowRecipeFragment()
-            val bundle = Bundle()
-            bundle.putParcelable(ARG_RECIPE, recipe)
-            fragment.arguments = bundle
-            return fragment
-        }
+//        fun newInstance(recipe: Recipe): ShowRecipeFragment {
+//            val fragment = ShowRecipeFragment()
+//            val bundle = Bundle()
+//            bundle.putParcelable(ARG_RECIPE, recipe)
+//            fragment.arguments = bundle
+//            return fragment
+//        }
     }
 }

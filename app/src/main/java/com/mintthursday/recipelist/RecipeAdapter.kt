@@ -21,7 +21,7 @@ class RecipeAdapter : RecyclerView.Adapter<RecipeViewHolder>() {
 
     fun setItems(items: List<Recipe>) {
         this.items = items.toMutableList()
-        notifyDataSetChanged()
+        notifyItemRangeInserted(0, items.size)
     }
 
     fun addItem(recipe: Recipe) {

@@ -1,19 +1,20 @@
 package com.mintthursday.recipelist
 
-import com.mintthursday.App.Companion.instance
-import com.mintthursday.Screens.createNewRecipe
-import com.mintthursday.Screens.showRecipe
-import com.mintthursday.Screens.editRecipe
 import android.os.Bundle
 import android.view.*
-import com.mintthursday.R
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.mintthursday.App.Companion.instance
 import com.mintthursday.MainActivity
+import com.mintthursday.R
 import com.mintthursday.databinding.FragmentRecipeListBinding
 import com.mintthursday.models.Recipe
+import com.mintthursday.recipe.creation.NewRecipeFragment
+import com.mintthursday.recipe.show.ShowRecipeFragment
 
 class RecipeListFragment : Fragment() {
 
@@ -26,9 +27,9 @@ class RecipeListFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentRecipeListBinding.inflate(inflater, container, false)
 
-
         (activity as? AppCompatActivity)?.setSupportActionBar(binding.myToolbar)
-        binding.fab.setOnClickListener { instance.router.navigateTo(createNewRecipe()) }
+//        binding.fab.setOnClickListener { instance.router.navigateTo(Screens.createNewRecipe()) }
+        binding.fab.setOnClickListener { binding.root.findNavController().navigate(R.id.action_recipeListFragment_to_newRecipeFragment) }
         initRecyclerViewMain(binding)
         return binding.root
     }
@@ -45,7 +46,8 @@ class RecipeListFragment : Fragment() {
         recipeAdapter.setOnItemClickListenerRecipe(object : OnRecipeClickListener {
             override fun onItemClick(recipe: Recipe, position: Int) {
                 if (activity is MainActivity) {
-                    instance.router.navigateTo(showRecipe(recipe))
+//                    instance.router.navigateTo(showRecipe(recipe))
+                    binding.root.findNavController().navigate(R.id.action_recipeListFragment_to_showRecipeFragment, bundleOf(ShowRecipeFragment.ARG_RECIPE to recipe))
                 }
             }
 
@@ -67,7 +69,8 @@ class RecipeListFragment : Fragment() {
                     override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
                         return when (item.itemId) {
                             R.id.correct_recipe -> {
-                                instance.router.navigateTo(editRecipe(recipe))
+//                                instance.router.navigateTo(editRecipe(recipe))
+                                binding.root.findNavController().navigate(R.id.action_recipeListFragment_to_newRecipeFragment, bundleOf(NewRecipeFragment.ARG_EDIT_RECIPE to recipe))
                                 mode.finish()
                                 true
                             }

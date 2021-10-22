@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import com.mintthursday.App
+import androidx.navigation.findNavController
 import com.mintthursday.R
 import com.mintthursday.databinding.FragmentIngredientBinding
 import com.mintthursday.models.Ingredient
@@ -53,13 +53,14 @@ class IngredientFragment : Fragment() {
         }
 
         initEditIngredient()
-        return view
+        return binding.root
     }
 
     private fun initToolbar() {
         val ingredientToolbar: Toolbar = binding.toolbar
         (activity as? AppCompatActivity)?.setSupportActionBar(ingredientToolbar)
-        ingredientToolbar.setNavigationOnClickListener { App.instance.router.exit() }
+//        ingredientToolbar.setNavigationOnClickListener { App.instance.router.exit() }
+        ingredientToolbar.setNavigationOnClickListener { binding.root.findNavController().navigateUp() }
     }
 
     private fun initEditIngredient() {
@@ -80,7 +81,8 @@ class IngredientFragment : Fragment() {
         val bundle = bundleOf(BUN_INGREDIENT to ingredient, BUN_ITEM_POSITION to itemPosition)
 
         parentFragmentManager.setFragmentResult(REQ_INGREDIENT, bundle)
-        App.instance.router.exit()
+//        App.instance.router.exit()
+        requireView().findNavController().navigateUp()
     }
 
     private fun buildIngredient(): Ingredient {

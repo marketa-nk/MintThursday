@@ -7,14 +7,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnFocusChangeListener
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mintthursday.App
-import com.mintthursday.Screens
 import com.mintthursday.databinding.FragmentNewRecipeBinding
+import com.mintthursday.R
 import com.mintthursday.models.Ingredient
 import com.mintthursday.models.Recipe
 import com.mintthursday.models.Step
@@ -98,7 +100,10 @@ class NewRecipeFragment : Fragment(), NoticeDialogListener {
             }
         }
 
-        binding.filledInputCategory.setOnClickListener { router.navigateTo(Screens.showNewIngredient()) }
+//        binding.filledInputCategory..setOnClickListener { router.navigateTo(Screens.showNewIngredient()) }
+        binding.filledInputCategory.setOnClickListener {
+            binding.root.findNavController().navigate(R.id.action_newRecipeFragment_to_ingredientFragment)
+        }
         binding.filledInputCategory.onFocusChangeListener = OnFocusChangeListener { v: View, hasFocus: Boolean ->
             if (v.isInTouchMode && hasFocus) {
                 v.performClick() // picks up first tap
@@ -109,7 +114,8 @@ class NewRecipeFragment : Fragment(), NoticeDialogListener {
         binding.btnAddStep.setOnClickListener { addStep() }
         binding.btnSaveRecipe.setOnClickListener {
             saveRecipe(buildRecipe())
-            router.exit()
+//            router.exit()
+            binding.root.findNavController().navigateUp()
         }
 
         parentFragmentManager.setFragmentResultListener(IngredientFragment.REQ_INGREDIENT, this, { key, bundle ->
@@ -139,7 +145,8 @@ class NewRecipeFragment : Fragment(), NoticeDialogListener {
     private fun initRecyclerViewIngredients(binding: FragmentNewRecipeBinding) {
         ingredientEditAdapter.setOnItemClickListener(object : OnIngredientClickListener {
             override fun onItemClick(ingredient: Ingredient, itemPosition: Int) {
-                router.navigateTo(Screens.editIngredient(ingredient, itemPosition))
+//                router.navigateTo(Screens.editIngredient(ingredient, itemPosition))
+                binding.root.findNavController().navigate(R.id.action_newRecipeFragment_to_ingredientFragment, bundleOf(IngredientFragment.ARG_INGREDIENT to ingredient, IngredientFragment.ARG_POSITION to itemPosition))
             }
         })
         binding.ingrRecyclerView.layoutManager = LinearLayoutManager(this.context)
@@ -243,12 +250,12 @@ class NewRecipeFragment : Fragment(), NoticeDialogListener {
         const val DIALOG_CATEGORY = "DIALOG_CATEGORY"
 
 
-        fun newInstance(recipe: Recipe): NewRecipeFragment {
-            val fragment = NewRecipeFragment()
-            val bundle = Bundle()
-            bundle.putParcelable(ARG_EDIT_RECIPE, recipe)
-            fragment.arguments = bundle
-            return fragment
-        }
+//        fun newInstance(recipe: Recipe): NewRecipeFragment {
+//            val fragment = NewRecipeFragment()
+//            val bundle = Bundle()
+//            bundle.putParcelable(ARG_EDIT_RECIPE, recipe)
+//            fragment.arguments = bundle
+//            return fragment
+//        }
     }
 }

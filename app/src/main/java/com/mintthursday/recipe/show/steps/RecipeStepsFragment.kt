@@ -5,8 +5,6 @@ import android.view.ViewGroup
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import com.mintthursday.R
-import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mintthursday.databinding.FragmentRecipeStepsBinding
 import com.mintthursday.models.Recipe
@@ -16,7 +14,7 @@ class RecipeStepsFragment : Fragment() {
     private var _binding: FragmentRecipeStepsBinding? = null
     private val binding get() = _binding!!
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
         _binding = FragmentRecipeStepsBinding.inflate(inflater, container, false)
 
